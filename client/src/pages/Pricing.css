@@ -1,0 +1,169 @@
+.pricing__hero {
+  padding-top: calc(var(--nav-height) + 5rem);
+  padding-bottom: 3rem;
+}
+
+.pricing__body {
+  padding-bottom: var(--section-gap);
+}
+
+.pricing__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.25rem;
+  align-items: stretch;
+}
+
+.p-card {
+  padding: 2.5rem 2rem;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.p-card--pop {
+  border-color: var(--coral);
+  box-shadow: 0 0 80px var(--coral-glow);
+}
+
+.pricing__popular-badge {
+  position: absolute;
+  top: -1px;
+  right: -1px;
+  background: var(--coral);
+  color: #fff;
+  padding: 0.4rem 1.25rem;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  border-bottom-left-radius: 12px;
+  border-top-right-radius: 11px;
+}
+
+.p-card__tag--gold {
+  background: var(--gold);
+  color: var(--bg-root);
+}
+
+.p-card__name {
+  font-size: 1.5rem;
+  margin-bottom: 0.4rem;
+}
+
+.p-card__desc {
+  font-size: 0.85rem;
+  color: var(--text-dim);
+  margin-bottom: 2rem;
+  min-height: 2.5rem;
+}
+
+.p-card__price-block {
+  margin-bottom: 1.5rem;
+}
+
+.p-card__price {
+  font-size: 3rem;
+  color: var(--text-primary);
+  line-height: 1;
+  display: block;
+}
+
+.p-card__price-label {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.68rem;
+  font-weight: 500;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  display: block;
+  margin-top: 0.3rem;
+}
+
+/* Data row — fee% + days */
+.p-card__data-row {
+  display: flex;
+  align-items: center;
+  margin: 1.5rem 0;
+  padding: 1.25rem;
+  background: rgba(0,0,0,0.02);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+}
+
+.p-data {
+  flex: 1;
+}
+
+.p-data__value {
+  font-size: 1.6rem;
+  display: block;
+  line-height: 1;
+}
+
+.p-data__label {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.62rem;
+  font-weight: 500;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-top: 0.25rem;
+  display: block;
+}
+
+.p-data__sep {
+  width: 1px;
+  height: 36px;
+  background: var(--border);
+}
+
+/* Features */
+.p-card__features {
+  list-style: none;
+  margin-bottom: 2rem;
+  flex-grow: 1;
+}
+
+.p-card__features li {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.6rem 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 0.88rem;
+  color: var(--text-primary);
+}
+
+.p-card__features li:last-child { border-bottom: none; }
+.p-card__features li.disabled { color: var(--text-dim); }
+
+.f-icon {
+  width: 22px;
+  height: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+li:not(.disabled) .f-icon {
+  background: var(--coral-glow);
+  color: var(--coral);
+}
+
+li.disabled .f-icon {
+  background: rgba(255,255,255,0.02);
+  color: var(--text-dim);
+}
+
+@media (max-width: 1024px) {
+  .pricing__grid {
+    grid-template-columns: 1fr;
+    max-width: 480px;
+    margin: 0 auto;
+  }
+  .p-card--pop { order: -1; }
+}
