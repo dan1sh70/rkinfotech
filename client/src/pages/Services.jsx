@@ -10,6 +10,7 @@ const services = [
     title: 'Career Advisory',
     subtitle: 'Strategic roadmapping for tech professionals',
     accent: '--coral',
+    bg: 'https://images.unsplash.com/photo-1573164713988-8665fc963095?auto=format&fit=crop&w=600&q=80',
     gridArea: 'advisory',
     bullets: [
       '1-on-1 coaching with senior industry veterans',
@@ -25,6 +26,7 @@ const services = [
     title: 'Resume Optimization',
     subtitle: 'Bypass the ATS and land interviews',
     accent: '--gold',
+    bg: 'https://images.unsplash.com/photo-1586281380349-632531db7ed4?auto=format&fit=crop&w=600&q=80',
     gridArea: 'resume',
     bullets: [
       'Keyword optimization for enterprise ATS systems',
@@ -40,6 +42,7 @@ const services = [
     title: 'Technical Training',
     subtitle: 'Enterprise-grade upskilling programs',
     accent: '--cyan',
+    bg: 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&w=600&q=80',
     gridArea: 'training',
     bullets: [
       'Cloud Architecture (AWS, Azure, GCP)',
@@ -55,6 +58,7 @@ const services = [
     title: 'Profile Marketing',
     subtitle: 'Direct access to hiring managers',
     accent: '--violet',
+    bg: 'https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=600&q=80',
     gridArea: 'marketing',
     bullets: [
       'Active distribution to 500+ hiring partners',
@@ -70,6 +74,7 @@ const services = [
     title: 'IT Staffing & Consulting',
     subtitle: 'Elite engineering talent for your enterprise',
     accent: '--coral',
+    bg: 'https://images.unsplash.com/photo-1600880292203-757bb62b4baf?auto=format&fit=crop&w=600&q=80',
     gridArea: 'staffing',
     bullets: [
       'Contract, Contract-to-Hire, and Direct Placement',
@@ -85,6 +90,7 @@ const services = [
     title: 'On-Job Support',
     subtitle: 'Mentorship during your critical first months',
     accent: '--gold',
+    bg: 'https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=600&q=80',
     gridArea: 'support',
     bullets: [
       'Real-time Slack/Teams support for blockers',
@@ -116,7 +122,8 @@ const Services = () => {
         <div className="container">
           <div className="bento-grid">
             {services.map((svc) => (
-              <div key={svc.id} className={`bento-card card bento-card--${svc.id}`} style={{ '--card-accent': `var(${svc.accent})` }}>
+              <div key={svc.id} className={`bento-card card bg-card bento-card--${svc.id}`} style={{ '--card-accent': `var(${svc.accent})`, backgroundImage: `url(${svc.bg})` }}>
+                <div className="card-overlay" />
                 <div className="bento-card__header">
                   <div className="bento-icon" style={{ color: `var(${svc.accent})`, background: `var(${svc.accent}-glow)` }}>
                     {svc.icon}

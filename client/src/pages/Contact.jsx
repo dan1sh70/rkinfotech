@@ -36,11 +36,11 @@ const Contact = () => {
             <div className="info-block card">
               <h4>Direct Inquiries</h4>
               <p className="mono" style={{color:'var(--text-primary)', fontSize:'0.88rem'}}>info@rkinfotechllc.com</p>
-              <p className="mono" style={{color:'var(--text-primary)', fontSize:'0.88rem'}}>+1 321 788 9008</p>
+              <p className="mono" style={{color:'var(--text-primary)', fontSize:'0.88rem'}}>(321) 788-9008</p>
             </div>
             <div className="info-block card">
               <h4>US Headquarters</h4>
-              <p>Winter Garden, FL</p>
+              <p>Winter Garden, FL<br/>United States</p>
             </div>
             <div className="info-block card">
               <h4>India Operations</h4>

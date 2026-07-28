@@ -26,63 +26,32 @@
   background: var(--bg-root);
 }
 
-/* Mesh Gradient Background */
-.mesh-bg {
+/* Image Slider Background */
+.hero-slider {
   position: absolute;
   inset: 0;
   z-index: 0;
   overflow: hidden;
-  opacity: 0.8;
-  pointer-events: none;
 }
 
-.mesh-blob {
+.hero-slide {
   position: absolute;
-  border-radius: 50%;
-  filter: blur(120px);
-  will-change: transform;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  opacity: 0;
+  transition: opacity 1.5s ease-in-out;
 }
 
-.mesh-blob--1 {
-  width: 60vw;
-  height: 60vw;
-  background: radial-gradient(circle, var(--coral-vivid), transparent 60%);
-  top: -20%;
-  left: -10%;
-  animation: meshFloat 15s ease-in-out infinite alternate;
+.hero-slide--active {
+  opacity: 1;
 }
 
-.mesh-blob--2 {
-  width: 50vw;
-  height: 50vw;
-  background: radial-gradient(circle, var(--gold-glow), transparent 70%);
-  bottom: -10%;
-  right: -10%;
-  animation: meshFloat 20s ease-in-out infinite alternate-reverse;
-}
-
-.mesh-blob--3 {
-  width: 40vw;
-  height: 40vw;
-  background: radial-gradient(circle, var(--cyan-glow), transparent 60%);
-  top: 30%;
-  left: 40%;
-  animation: meshFloat 12s ease-in-out infinite alternate;
-}
-
-.mesh-blob--4 {
-  width: 45vw;
-  height: 45vw;
-  background: radial-gradient(circle, var(--violet-glow), transparent 60%);
-  bottom: 20%;
-  left: 10%;
-  animation: meshFloat 18s ease-in-out infinite alternate-reverse;
-}
-
-@keyframes meshFloat {
-  0% { transform: translate(0, 0) scale(1); }
-  50% { transform: translate(10%, 15%) scale(1.1); }
-  100% { transform: translate(-10%, -5%) scale(0.9); }
+.hero-slider__overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, rgba(255,255,255,0.7), rgba(255,255,255,0.9));
+  z-index: 1;
 }
 
 /* Grid & Vignette */
@@ -598,4 +567,24 @@
   .about__metrics { flex-wrap: wrap; gap: 1.5rem; }
   .cta-box__actions { flex-direction: column; align-items: center; }
   .footer__grid { grid-template-columns: 1fr; gap: 2rem; }
+}
+
+/* ─── BACKGROUND CARD SUPPORT ───────────────────────── */
+.bg-card {
+  position: relative;
+  background-size: cover;
+  background-position: center;
+  overflow: hidden;
+}
+
+.bg-card > * {
+  position: relative;
+  z-index: 2;
+}
+
+.card-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.85));
+  z-index: 1 !important;
 }

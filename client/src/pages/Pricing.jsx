@@ -12,6 +12,7 @@ const plans = [
     days: '180',
     daysLabel: 'Days Support',
     tag: null,
+    bg: 'https://images.unsplash.com/photo-1554200876-56c2f25224fa?auto=format&fit=crop&w=600&q=80',
     description: 'Essential toolkit for the self-driven job seeker.',
     features: [
       { text: 'Resume Optimization', ok: true },
@@ -29,6 +30,7 @@ const plans = [
     days: '150',
     daysLabel: 'Days Support',
     tag: 'Most Popular',
+    bg: 'https://images.unsplash.com/photo-1553877522-43269d4ea984?auto=format&fit=crop&w=600&q=80',
     description: 'Full-service coaching with dedicated placement support.',
     features: [
       { text: 'Resume Optimization', ok: true },
@@ -46,6 +48,7 @@ const plans = [
     days: '110',
     daysLabel: 'Days Max to Place',
     tag: 'Elite',
+    bg: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=600&q=80',
     description: 'White-glove coaching with a full placement guarantee.',
     features: [
       { text: 'Resume Optimization', ok: true },
@@ -79,7 +82,8 @@ const Pricing = () => {
         <div className="container">
           <div className="pricing__grid">
             {plans.map((plan, i) => (
-              <div key={i} className={`p-card card ${plan.tag === 'Most Popular' ? 'p-card--pop' : ''}`}>
+              <div key={i} className={`p-card card bg-card ${plan.tag === 'Most Popular' ? 'p-card--pop' : ''}`} style={{ backgroundImage: `url(${plan.bg})` }}>
+                <div className="card-overlay" />
                 {plan.tag && (
                   <div className={`p-card__tag ${plan.tag === 'Elite' ? 'p-card__tag--gold' : ''}`}>
                     {plan.tag}

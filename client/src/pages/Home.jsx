@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, Briefcase, Code2, GraduationCap, FileText, Users, Headphones, Star, ChevronRight, Activity, TrendingUp, CheckCircle } from 'lucide-react';
 import './Home.css';
@@ -46,17 +46,35 @@ const BrandLogo = ({ name }) => {
 };
 
 const Home = () => {
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const heroImages = [
+    'https://images.unsplash.com/photo-1519389950473-47ba0277781c?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80',
+    'https://images.unsplash.com/photo-1498050108023-c5249f4df085?ixlib=rb-4.0.3&auto=format&fit=crop&w=2072&q=80',
+    'https://images.unsplash.com/photo-1522071820081-009f0129c71c?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80'
+  ];
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % heroImages.length);
+    }, 5000);
+    return () => clearInterval(timer);
+  }, [heroImages.length]);
+
   return (
     <div className="home">
 
-      {/* ═══════ HERO (MIND-BLOWING REDESIGN) ═══════ */}
+      {/* ═══════ HERO (PHOTOGRAPHY REDESIGN) ═══════ */}
       <section className="hero-v4">
-        {/* Dynamic Fluid Background */}
-        <div className="mesh-bg">
-          <div className="mesh-blob mesh-blob--1" />
-          <div className="mesh-blob mesh-blob--2" />
-          <div className="mesh-blob mesh-blob--3" />
-          <div className="mesh-blob mesh-blob--4" />
+        {/* Fading Image Slider */}
+        <div className="hero-slider">
+          {heroImages.map((src, idx) => (
+            <div 
+              key={idx} 
+              className={`hero-slide ${idx === currentSlide ? 'hero-slide--active' : ''}`}
+              style={{ backgroundImage: `url(${src})` }}
+            />
+          ))}
+          <div className="hero-slider__overlay" />
         </div>
         
         {/* Decorative Grid & Vignette */}
@@ -100,7 +118,7 @@ const Home = () => {
             <div className="hero-badge animate-fade-up delay-1">
               <div className="hero-badge__glow" />
               <span className="badge-dot" />
-              <span className="mono">E-VERIFIED &middot; GLOBAL OPERATIONS</span>
+              <span className="mono">E-VERIFIED &middot; US-BASED &middot; NATIONWIDE</span>
             </div>
 
             <h1 className="hero-v4__title animate-scale delay-2">
@@ -159,15 +177,16 @@ const Home = () => {
 
           <div className="services__grid">
             {[
-              { icon: <GraduationCap size={26} />, title: 'Career Advisory', desc: 'One-on-one coaching with senior advisors who map your skills to the right opportunities.', accent: '--coral' },
-              { icon: <FileText size={26} />, title: 'Resume Optimization', desc: 'ATS-tuned resumes that get past filters and land on hiring managers\' desks.', accent: '--gold' },
-              { icon: <Code2 size={26} />, title: 'Technical Training', desc: 'Targeted upskilling in cloud, DevOps, data engineering, and modern frameworks.', accent: '--cyan' },
-              { icon: <Users size={26} />, title: 'Profile Marketing', desc: 'Strategic distribution of your profile to our network of 500+ hiring partners.', accent: '--violet' },
-              { icon: <Briefcase size={26} />, title: 'IT Staffing', desc: 'Pre-vetted senior engineers for contract, direct hire, or staff augmentation.', accent: '--coral' },
-              { icon: <Headphones size={26} />, title: 'Job Support', desc: 'Ongoing mentorship and real-time support during your first critical months on the job.', accent: '--gold' },
+              { icon: <GraduationCap size={26} />, title: 'Career Advisory', desc: 'One-on-one coaching with senior advisors who map your skills to the right opportunities.', accent: '--coral', bg: 'https://images.unsplash.com/photo-1573164713988-8665fc963095?auto=format&fit=crop&w=600&q=80' },
+              { icon: <FileText size={26} />, title: 'Resume Optimization', desc: 'ATS-tuned resumes that get past filters and land on hiring managers\' desks.', accent: '--gold', bg: 'https://images.unsplash.com/photo-1586281380349-632531db7ed4?auto=format&fit=crop&w=600&q=80' },
+              { icon: <Code2 size={26} />, title: 'Technical Training', desc: 'Targeted upskilling in cloud, DevOps, data engineering, and modern frameworks.', accent: '--cyan', bg: 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&w=600&q=80' },
+              { icon: <Users size={26} />, title: 'Profile Marketing', desc: 'Strategic distribution of your profile to our network of 500+ hiring partners.', accent: '--violet', bg: 'https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=600&q=80' },
+              { icon: <Briefcase size={26} />, title: 'IT Staffing', desc: 'Pre-vetted senior engineers for contract, direct hire, or staff augmentation.', accent: '--coral', bg: 'https://images.unsplash.com/photo-1600880292203-757bb62b4baf?auto=format&fit=crop&w=600&q=80' },
+              { icon: <Headphones size={26} />, title: 'Job Support', desc: 'Ongoing mentorship and real-time support during your first critical months on the job.', accent: '--gold', bg: 'https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=600&q=80' },
             ].map((s, i) => (
               <RevealSection key={i} delay={i * 80}>
-                <div className="svc-card card">
+                <div className="svc-card card bg-card" style={{ backgroundImage: `url(${s.bg})` }}>
+                  <div className="card-overlay" />
                   <div className="svc-card__icon" style={{background: `var(${s.accent}-glow)`, color: `var(${s.accent})`}}>
                     {s.icon}
                   </div>
@@ -194,8 +213,8 @@ const Home = () => {
               </h2>
               <p className="about__text">
                 Founded in 2018, RK Infotech quickly grew into a trusted partner for both startups and 
-                enterprise clients. In 2021, we expanded into IT staffing and recruitment, combining 
-                our deep technical expertise with a people-first approach.
+                enterprise clients across the United States. From Silicon Valley to NYC, we expanded 
+                into IT staffing and recruitment, combining our deep technical expertise with a people-first approach.
               </p>
 
               <div className="about__metrics">
@@ -242,11 +261,12 @@ const Home = () => {
 
           <div className="test__grid">
             {[
-              { name: 'Balaji', role: 'Business Analyst — San Francisco, CA', text: '"RK Infotech didn\'t just help me get a job — they helped me build my career. From refining my resume to providing targeted technical training, their team ensured I was market-ready. Highly professional and result-oriented!"', initial: 'B' },
-              { name: 'Lakshmi', role: 'Software Engineer — New York', text: '"I\'m truly impressed with RK Infotech\'s approach. They took the time to understand my background and helped me rebuild my resume. Thanks to their guidance, I\'ve found a fantastic full-time opportunity."', initial: 'L' },
+              { name: 'Balaji', role: 'Business Analyst — San Francisco, CA', text: '"RK Infotech didn\'t just help me get a job — they helped me build my career. From refining my resume to providing targeted technical training, their team ensured I was market-ready. Highly professional and result-oriented!"', initial: 'B', bg: 'https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=800&q=80' },
+              { name: 'Lakshmi', role: 'Software Engineer — New York', text: '"I\'m truly impressed with RK Infotech\'s approach. They took the time to understand my background and helped me rebuild my resume. Thanks to their guidance, I\'ve found a fantastic full-time opportunity."', initial: 'L', bg: 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=800&q=80' },
             ].map((t, i) => (
               <RevealSection key={i} delay={i * 120}>
-                <div className="test-card card">
+                <div className="test-card card bg-card" style={{ backgroundImage: `url(${t.bg})` }}>
+                  <div className="card-overlay" />
                   <div className="test-card__stars">
                     {[...Array(5)].map((_, j) => <Star key={j} size={14} fill="var(--gold)" color="var(--gold)" />)}
                   </div>

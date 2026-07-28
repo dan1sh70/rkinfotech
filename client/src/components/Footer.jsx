@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { MapPin } from 'lucide-react';
 import './Footer.css';
 
 const Footer = () => {
@@ -14,10 +15,14 @@ const Footer = () => {
               <span style={{fontFamily:"'IBM Plex Mono'", fontSize:'0.5rem', color:'var(--text-dim)', letterSpacing:'0.1em'}}>THE FUTURE BLOOMS IN CODE</span>
             </div>
           </div>
-          <p>Shaping careers, building futures, and connecting top-tier talent with leading enterprises since 2018.</p>
+          <p>Shaping careers, building futures, and connecting top-tier talent with leading enterprises across the United States since 2018.</p>
           <div className="footer__contact">
             <span className="mono" style={{color:'var(--text-primary)', fontSize:'0.85rem'}}>info@rkinfotechllc.com</span>
-            <span className="mono" style={{color:'var(--text-primary)', fontSize:'0.85rem'}}>+1 321 788 9008</span>
+            <span className="mono" style={{color:'var(--text-primary)', fontSize:'0.85rem'}}>(321) 788-9008</span>
+          </div>
+          <div style={{marginTop: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem'}}>
+            <MapPin size={16} color="var(--text-dim)" />
+            <span style={{fontSize: '0.8rem', color: 'var(--text-dim)', fontWeight: 500}}>Headquartered in the USA</span>
           </div>
         </div>
 
