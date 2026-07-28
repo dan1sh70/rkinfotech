@@ -9,7 +9,7 @@ const Footer = () => {
       <div className="container footer__grid">
         <div className="footer__brand">
           <div style={{display:'flex', alignItems:'center', marginBottom:'1.25rem'}}>
-            <img src="/logo.jpeg" alt="RK Infotech" style={{ height: '55px', objectFit: 'contain', marginLeft: '-10px' }} />
+            <img src="/RKL-LOGO-2.png" alt="RK Infotech" style={{ height: '55px', objectFit: 'contain', marginLeft: '-10px' }} />
           </div>
           <p>Shaping careers, building futures, and connecting top-tier talent with leading enterprises across the United States since 2018.</p>
           <div className="footer__contact">
