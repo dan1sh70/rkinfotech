@@ -20,11 +20,7 @@ const Navbar = () => {
     <nav className={`navbar ${scrolled ? 'navbar--scrolled' : ''}`}>
       <div className="container navbar__inner">
         <Link to="/" className="navbar__brand">
-          <span className="brand-mark">RK</span>
-          <div className="brand-text">
-            <span className="brand-name">INFOTECH</span>
-            <span className="brand-tag">THE FUTURE BLOOMS IN CODE</span>
-          </div>
+          <img src="/logo.jpeg" alt="RK Infotech" style={{ height: '45px', objectFit: 'contain' }} />
         </Link>
 
         <div className={`navbar__links ${isOpen ? 'navbar__links--open' : ''}`}>

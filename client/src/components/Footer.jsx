@@ -8,12 +8,8 @@ const Footer = () => {
     <footer className="footer">
       <div className="container footer__grid">
         <div className="footer__brand">
-          <div style={{display:'flex', alignItems:'center', gap:'0.75rem', marginBottom:'1.25rem'}}>
-            <span style={{fontFamily:"'IBM Plex Sans'", fontWeight:700, fontSize:'1.5rem', color:'var(--coral)'}}>RK</span>
-            <div style={{borderLeft:'1.5px solid var(--border-hover)', paddingLeft:'0.75rem'}}>
-              <span style={{fontFamily:"'IBM Plex Sans'", fontWeight:700, fontSize:'0.8rem', letterSpacing:'0.14em', color:'var(--gold)', display:'block'}}>INFOTECH</span>
-              <span style={{fontFamily:"'IBM Plex Mono'", fontSize:'0.5rem', color:'var(--text-dim)', letterSpacing:'0.1em'}}>THE FUTURE BLOOMS IN CODE</span>
-            </div>
+          <div style={{display:'flex', alignItems:'center', marginBottom:'1.25rem'}}>
+            <img src="/logo.jpeg" alt="RK Infotech" style={{ height: '55px', objectFit: 'contain', marginLeft: '-10px' }} />
           </div>
           <p>Shaping careers, building futures, and connecting top-tier talent with leading enterprises across the United States since 2018.</p>
           <div className="footer__contact">
