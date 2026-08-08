@@ -1,97 +1,79 @@
-import React, { useState } from 'react';
-import { Gift, Share2, DollarSign, ArrowRight, Copy, Check } from 'lucide-react';
+﻿import React, { useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import { UserPlus, DollarSign, Gift, ArrowRight } from 'lucide-react';
 import './ReferEarn.css';
 
+const useReveal = () => {
+  useEffect(() => {
+    const els = document.querySelectorAll('.reveal');
+    const obs = new IntersectionObserver(
+      (entries) => entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in-view'); }),
+      { threshold: 0.1 }
+    );
+    els.forEach(el => obs.observe(el));
+    return () => obs.disconnect();
+  }, []);
+};
+
 const ReferEarn = () => {
-  const [formData, setFormData] = useState({ name: '', email: '' });
-  const [referralLink, setReferralLink] = useState('');
-  const [copied, setCopied] = useState(false);
-
-  const handleGenerate = (e) => {
-    e.preventDefault();
-    if (formData.name && formData.email) {
-      const code = Math.random().toString(36).substring(2, 10).toUpperCase();
-      setReferralLink(`https://rkinfotechllc.com/contact?ref=${code}`);
-    }
-  };
-
-  const handleCopy = () => {
-    navigator.clipboard.writeText(referralLink);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
-  };
-
+  useReveal();
   return (
-    <div className="refer animate-fade-up">
-      <section className="refer__hero">
-        <div className="container text-center">
-          <span className="section-tag">Affiliate Program</span>
-          <h1 className="section-title">
-            Refer Top Talent.<br />
-            <span className="text-gold">Earn Up to <span className="mono">$750</span>.</span>
+    <div className="refer-page">
+      <div className="refer-hero">
+        <div className="container">
+          <span className="section-eyebrow animate-fade-up delay-1">Refer & Earn</span>
+          <h1 className="section-title animate-fade-up delay-2" style={{ fontSize: 'clamp(2.5rem, 5vw, 4rem)', marginTop: '0.5rem' }}>
+            Earn by Helping Others<br />Land Their Dream Role
           </h1>
-          <p className="section-subtitle">
-            Help your network advance their careers and earn premium commissions for every successful placement.
+          <p className="section-desc animate-fade-up delay-3" style={{ margin: '1.25rem auto 0' }}>
+            Refer a friend or colleague to RK Infotech and earn rewards when they get placed.
           </p>
         </div>
-      </section>
+      </div>
 
-      <section className="refer__body">
-        <div className="container refer__grid">
-          
-          <div className="refer__steps">
-            <h3 className="refer__steps-title">How It Works</h3>
+      <div className="container section-padding">
+        <div className="text-center" style={{ marginBottom: '3rem' }}>
+          <h2 className="section-title reveal">How It Works</h2>
+        </div>
+        <div className="refer-steps">
+          {[
+            { icon: <UserPlus size={28} />, step: '01', title: 'Refer Someone', desc: 'Share your unique referral link or simply tell us who to contact.' },
+            { icon: <DollarSign size={28} />, step: '02', title: 'They Enroll', desc: 'Your referral signs up for any of our career coaching or placement services.' },
+            { icon: <Gift size={28} />, step: '03', title: 'You Earn', desc: 'Receive your reward once your referral completes their program.' },
+          ].map((s, i) => (
+            <div key={i} className="refer-step reveal">
+              <div className="refer-step__num">{s.step}</div>
+              <div style={{ color: 'var(--accent)', marginBottom: '1rem' }}>{s.icon}</div>
+              <h4 style={{ marginBottom: '0.75rem' }}>{s.title}</h4>
+              <p style={{ fontSize: '0.88rem' }}>{s.desc}</p>
+            </div>
+          ))}
+        </div>
+
+        <div className="refer-rewards section-padding" style={{ paddingBottom: 0 }}>
+          <div className="text-center" style={{ marginBottom: '2.5rem' }}>
+            <h2 className="section-title reveal">Referral Rewards</h2>
+          </div>
+          <div className="refer-rewards-grid">
             {[
-              { icon: <Share2 size={20} />, title: 'Get Your Unique Link', desc: 'Register below to generate your personal tracking link in seconds.' },
-              { icon: <Gift size={20} />, title: 'Share With Your Network', desc: 'Send it to IT professionals who are actively seeking career growth or job placement.' },
-              { icon: <DollarSign size={20} />, title: 'Earn Your Commission', desc: 'Receive your payout when your referral enrolls and gets successfully placed.' },
-            ].map((step, i) => (
-              <div key={i} className="refer-step card">
-                <div className="refer-step__icon">{step.icon}</div>
-                <div>
-                  <h4>{step.title}</h4>
-                  <p>{step.desc}</p>
-                </div>
+              { amount: '$250', label: 'Per Successful Referral', desc: 'Earn $250 cash reward for every referred candidate who completes enrollment.' },
+              { amount: '$500', label: 'Elite Referrer Bonus', desc: 'Refer 3 or more candidates and unlock our elite referrer bonus of $500.' },
+            ].map((r, i) => (
+              <div key={i} className="reward-card reveal">
+                <div className="reward-card__amount">{r.amount}</div>
+                <h4 style={{ marginTop: '0.75rem', marginBottom: '0.5rem' }}>{r.label}</h4>
+                <p style={{ fontSize: '0.88rem' }}>{r.desc}</p>
               </div>
             ))}
           </div>
 
-          <div className="refer__form-wrapper card">
-            <h3>Generate Your Link</h3>
-            <p className="refer__form-subtitle">Join the affiliate program in seconds.</p>
-
-            {!referralLink ? (
-              <form onSubmit={handleGenerate}>
-                <div className="form-group">
-                  <label>Full Name</label>
-                  <input type="text" value={formData.name} onChange={e => setFormData({...formData, name: e.target.value})} required placeholder="Jane Doe" />
-                </div>
-                <div className="form-group">
-                  <label>Email Address</label>
-                  <input type="email" value={formData.email} onChange={e => setFormData({...formData, email: e.target.value})} required placeholder="jane@example.com" />
-                </div>
-                <button type="submit" className="btn btn-gold full-width">
-                  Generate Link <ArrowRight size={14} />
-                </button>
-              </form>
-            ) : (
-              <div className="refer__result animate-fade-in">
-                <div className="refer__success-icon">✓</div>
-                <h4>Your link is ready!</h4>
-                <div className="refer__link-box">
-                  <code className="mono">{referralLink}</code>
-                </div>
-                <button className="btn btn-primary full-width" onClick={handleCopy}>
-                  {copied ? <><Check size={14} /> Copied!</> : <><Copy size={14} /> Copy to Clipboard</>}
-                </button>
-                <button className="btn btn-outline full-width" style={{marginTop: '0.75rem'}} onClick={() => { setReferralLink(''); setFormData({name:'', email:''}); }}>
-                  Generate Another
-                </button>
-              </div>
-            )}
+          <div style={{ textAlign: 'center', marginTop: '3rem' }}>
+            <Link to="/contact" className="btn btn-primary">
+              Start Referring <ArrowRight size={16} />
+            </Link>
           </div>
         </div>
-      </section>
+      </div>
     </div>
   );
 };

@@ -1,66 +1,61 @@
-import React, { useState } from 'react';
-import { ChevronDown } from 'lucide-react';
+﻿import React, { useState, useEffect } from 'react';
+import { Plus, Minus } from 'lucide-react';
 import './FAQ.css';
 
+const useReveal = () => {
+  useEffect(() => {
+    const els = document.querySelectorAll('.reveal');
+    const obs = new IntersectionObserver(
+      (entries) => entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in-view'); }),
+      { threshold: 0.1 }
+    );
+    els.forEach(el => obs.observe(el));
+    return () => obs.disconnect();
+  }, []);
+};
+
 const faqs = [
-  {
-    category: 'For Job Seekers',
-    items: [
-      { q: 'What is included in the Professional Plan?', a: 'The Professional Plan ($5,000 enrollment + 12% placement fee) includes complete resume optimization, comprehensive interview preparation, profile marketing to 500+ hiring partners, and a dedicated career coach.' },
-      { q: 'Is there a guarantee I will get placed?', a: 'Our Platinum Plan ($20,000, no placement fee) includes a strict placement guarantee within 110 days. For other plans, our 90%+ success rate demonstrates our commitment.' },
-      { q: 'How does the post-placement fee work?', a: 'After you secure a job, a one-time percentage of your first-year base salary (12% for Professional, 17% for Basic) is payable. Platinum has zero post-placement fees.' },
-      { q: 'How long does placement take?', a: 'Most Professional/Platinum candidates receive calls within 2-4 weeks and are placed within 60-90 days.' },
-    ]
-  },
-  {
-    category: 'For Employers',
-    items: [
-      { q: 'What is your typical time-to-fill?', a: 'We present pre-vetted, interview-ready candidates within 48-72 hours.' },
-      { q: 'Do you offer contract-to-hire?', a: 'Yes — direct hire, contract, and contract-to-hire, fully customized to your needs.' },
-      { q: 'What technologies do your candidates specialize in?', a: 'Cloud (AWS, Azure, GCP), DevOps, data engineering, full-stack development (React, Node, Java, Python), QA automation, and business analysis.' },
-    ]
-  }
+  { q: 'How long does the placement process typically take?', a: 'Our average placement timeline is 42 days from enrollment to offer acceptance. However, this can vary based on your experience level, target roles, and responsiveness to opportunities. We have placed candidates in as little as 2 weeks.' },
+  { q: 'Is RK Infotech a legitimate US company?', a: 'Yes. RK Infotech LLC is a fully registered, E-Verified US company based in Nashville, TN. We operate nationwide and have been placing IT professionals since 2018.' },
+  { q: 'Do you offer a placement guarantee?', a: 'Our Growth plan includes a placement guarantee. If we do not place you within the agreed timeline, we continue working with you at no additional cost until you are placed.' },
+  { q: 'What types of roles do you specialize in?', a: 'We specialize in IT roles including Software Engineers, Data Engineers, Business Analysts, Cloud Architects, DevOps Engineers, QA Engineers, and Project Managers.' },
+  { q: 'Can I work with you if I am on a visa?', a: 'Yes. We work with candidates on H1B, OPT, CPT, and other work authorizations. Our team is experienced in navigating visa-related hiring processes.' },
+  { q: 'How does the resume optimization service work?', a: 'Our resume experts work with you 1-on-1 to restructure your experience, align it with ATS keywords for your target roles, and highlight achievements over responsibilities. Most clients see a significant increase in interview callbacks within 2 weeks.' },
+  { q: 'What is included in the technical training program?', a: 'Programs are customized to your career goals and may include cloud platforms (AWS, Azure, GCP), DevOps tools, data engineering frameworks, agile methodologies, and more. Training is live, instructor-led, and project-based.' },
+  { q: 'How much does it cost?', a: 'Our pricing is customized based on the specific services and level of support you need. We offer flexible payment options. Contact us for a personalized quote.' },
 ];
 
 const FAQ = () => {
-  const [activeCat, setActiveCat] = useState(0);
-  const [openIdx, setOpenIdx] = useState(null);
+  useReveal();
+  const [open, setOpen] = useState(null);
 
   return (
-    <div className="faq animate-fade-up">
-      <section className="faq__hero">
-        <div className="container text-center">
-          <span className="section-tag">FAQ</span>
-          <h1 className="section-title">Questions? <span className="gradient-text">Answered.</span></h1>
-          <p className="section-subtitle">Everything you need to know about our placement packages and staffing solutions.</p>
+    <div className="faq-page">
+      <div className="faq-hero">
+        <div className="container">
+          <span className="section-eyebrow animate-fade-up delay-1">FAQ</span>
+          <h1 className="section-title animate-fade-up delay-2" style={{ fontSize: 'clamp(2.5rem, 5vw, 4rem)', marginTop: '0.5rem' }}>
+            Frequently Asked Questions
+          </h1>
+          <p className="section-desc animate-fade-up delay-3" style={{ margin: '1.25rem auto 0' }}>
+            Everything you need to know about RK Infotech and our services.
+          </p>
         </div>
-      </section>
+      </div>
 
-      <section className="faq__body">
-        <div className="container faq__layout">
-          <aside className="faq__side">
-            {faqs.map((c, idx) => (
-              <button key={idx} className={`faq__cat ${activeCat === idx ? 'faq__cat--on' : ''}`} onClick={() => { setActiveCat(idx); setOpenIdx(null); }}>
-                {c.category}
+      <div className="container" style={{ paddingBottom: 'var(--section-gap)' }}>
+        <div className="faq-list">
+          {faqs.map((faq, i) => (
+            <div key={i} className="faq-item reveal">
+              <button className="faq-item__trigger" onClick={() => setOpen(open === i ? null : i)}>
+                <span>{faq.q}</span>
+                {open === i ? <Minus size={18} color="var(--accent)" /> : <Plus size={18} />}
               </button>
-            ))}
-          </aside>
-
-          <div className="faq__list">
-            {faqs[activeCat].items.map((item, idx) => (
-              <div key={idx} className={`faq-item card ${openIdx === idx ? 'faq-item--open' : ''}`}>
-                <button className="faq-item__q" onClick={() => setOpenIdx(openIdx === idx ? null : idx)}>
-                  <span>{item.q}</span>
-                  <ChevronDown size={18} className="faq-item__chev" />
-                </button>
-                <div className="faq-item__a">
-                  <div className="faq-item__a-inner"><p>{item.a}</p></div>
-                </div>
-              </div>
-            ))}
-          </div>
+              {open === i && <div className="faq-item__body">{faq.a}</div>}
+            </div>
+          ))}
         </div>
-      </section>
+      </div>
     </div>
   );
 };

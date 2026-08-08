@@ -1,169 +1,101 @@
-import React from 'react';
+﻿import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { GraduationCap, FileText, Code2, Users, Briefcase, Headphones, ArrowRight, CheckCircle2 } from 'lucide-react';
+import { ArrowRight, CheckCircle, GraduationCap, FileText, Code2, Users, Briefcase, Headphones, Zap } from 'lucide-react';
 import './Services.css';
+
+const useReveal = () => {
+  useEffect(() => {
+    const els = document.querySelectorAll('.reveal, .reveal-left, .reveal-right');
+    const obs = new IntersectionObserver(
+      (entries) => entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in-view'); }),
+      { threshold: 0.1 }
+    );
+    els.forEach(el => obs.observe(el));
+    return () => obs.disconnect();
+  }, []);
+};
 
 const services = [
   {
-    id: 'advisory',
-    icon: <GraduationCap size={28} />,
-    title: 'Career Advisory',
-    subtitle: 'Strategic roadmapping for tech professionals',
-    accent: '--coral',
-    bg: 'https://images.unsplash.com/photo-1573164713988-8665fc963095?auto=format&fit=crop&w=600&q=80',
-    gridArea: 'advisory',
-    bullets: [
-      '1-on-1 coaching with senior industry veterans',
-      'Gap analysis between current skills and target roles',
-      'Personalized learning paths for rapid upskilling',
-      'Salary negotiation tactics and market intelligence'
-    ],
-    cta: 'Book Advisory Session'
+    icon: <GraduationCap size={22} />, color: 'var(--accent)', bg: 'var(--accent-soft)',
+    title: 'Career Advisory', desc: 'One-on-one career coaching with seasoned industry advisors who help you navigate the US IT job market.',
+    features: ['Career roadmap planning', 'Role targeting strategy', 'Industry insights', 'Salary negotiation']
   },
   {
-    id: 'resume',
-    icon: <FileText size={28} />,
-    title: 'Resume Optimization',
-    subtitle: 'Bypass the ATS and land interviews',
-    accent: '--gold',
-    bg: 'https://images.unsplash.com/photo-1586281380349-632531db7ed4?auto=format&fit=crop&w=600&q=80',
-    gridArea: 'resume',
-    bullets: [
-      'Keyword optimization for enterprise ATS systems',
-      'Quantifiable achievement highlighting',
-      'LinkedIn profile overhaul & SEO tuning',
-      'Cover letter templates tailored by industry'
-    ],
-    cta: 'Upgrade My Resume'
+    icon: <FileText size={22} />, color: 'var(--green)', bg: 'var(--green-soft)',
+    title: 'Resume Optimization', desc: 'ATS-tuned, keyword-optimized resumes that pass automated filters and make an impact on hiring managers.',
+    features: ['ATS keyword mapping', 'Achievement-led writing', 'LinkedIn alignment', 'Multiple format versions']
   },
   {
-    id: 'training',
-    icon: <Code2 size={28} />,
-    title: 'Technical Training',
-    subtitle: 'Enterprise-grade upskilling programs',
-    accent: '--cyan',
-    bg: 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&w=600&q=80',
-    gridArea: 'training',
-    bullets: [
-      'Cloud Architecture (AWS, Azure, GCP)',
-      'Modern Full-Stack (React, Node.js, Python)',
-      'Data Engineering & Snowflake Migration',
-      'DevOps, CI/CD, and Kubernetes orchestration'
-    ],
-    cta: 'Explore Curriculum'
+    icon: <Code2 size={22} />, color: 'var(--violet)', bg: 'var(--violet-soft)',
+    title: 'Technical Training', desc: 'Targeted upskilling programs in high-demand areas like cloud, DevOps, data engineering, and modern frameworks.',
+    features: ['Hands-on labs', 'Project-based learning', 'Certification prep', 'Live instructor sessions']
   },
   {
-    id: 'marketing',
-    icon: <Users size={28} />,
-    title: 'Profile Marketing',
-    subtitle: 'Direct access to hiring managers',
-    accent: '--violet',
-    bg: 'https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=600&q=80',
-    gridArea: 'marketing',
-    bullets: [
-      'Active distribution to 500+ hiring partners',
-      'Priority consideration for exclusive roles',
-      'Vendor management system (VMS) submission',
-      'Pre-interview briefing and insight'
-    ],
-    cta: 'Market My Profile'
+    icon: <Users size={22} />, color: 'var(--amber)', bg: 'var(--amber-soft)',
+    title: 'Profile Marketing', desc: 'Strategic multi-channel distribution of your professional profile to our network of 500+ verified hiring partners.',
+    features: ['500+ partner network', 'Active market outreach', 'Interview scheduling', 'Pipeline management']
   },
   {
-    id: 'staffing',
-    icon: <Briefcase size={28} />,
-    title: 'IT Staffing & Consulting',
-    subtitle: 'Elite engineering talent for your enterprise',
-    accent: '--coral',
-    bg: 'https://images.unsplash.com/photo-1600880292203-757bb62b4baf?auto=format&fit=crop&w=600&q=80',
-    gridArea: 'staffing',
-    bullets: [
-      'Contract, Contract-to-Hire, and Direct Placement',
-      'Pre-vetted senior engineers and architects',
-      'Rapid deployment within 48-72 hours',
-      'Payroll, compliance, and onboarding managed'
-    ],
-    cta: 'Request Talent'
+    icon: <Briefcase size={22} />, color: 'var(--rose)', bg: 'var(--rose-soft)',
+    title: 'IT Staffing', desc: 'Pre-vetted, senior IT talent delivered fast for contract, direct hire, or staff augmentation engagements.',
+    features: ['48-hour candidate delivery', 'Background verified', 'Technical screening', 'Flexible engagement models']
   },
   {
-    id: 'support',
-    icon: <Headphones size={28} />,
-    title: 'On-Job Support',
-    subtitle: 'Mentorship during your critical first months',
-    accent: '--gold',
-    bg: 'https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=600&q=80',
-    gridArea: 'support',
-    bullets: [
-      'Real-time Slack/Teams support for blockers',
-      'Code review assistance and best practices',
-      'Architecture design validation',
-      'Performance review preparation'
-    ],
-    cta: 'Get Supported'
-  }
+    icon: <Headphones size={22} />, color: 'var(--accent)', bg: 'var(--accent-soft)',
+    title: 'Ongoing Job Support', desc: 'Continuous mentorship and guidance during your job search and your first critical months on the job.',
+    features: ['Mock interviews', 'Real-time guidance', 'Performance coaching', '90-day onboarding support']
+  },
 ];
 
 const Services = () => {
+  useReveal();
   return (
-    <div className="services-page animate-fade-up">
-      <section className="services-hero">
-        <div className="container text-center">
-          <span className="section-tag">Our Expertise</span>
-          <h1 className="section-title">
-            Engineering <span className="gradient-text">Success.</span>
+    <div className="services-page">
+      <div className="services-hero">
+        <div className="container">
+          <span className="section-eyebrow animate-fade-up delay-1">Our Services</span>
+          <h1 className="section-title animate-fade-up delay-2" style={{ fontSize: 'clamp(2.5rem, 5vw, 4rem)', marginTop: '0.5rem' }}>
+            Everything You Need to<br />Land Your Dream Role
           </h1>
-          <p className="section-subtitle" style={{ maxWidth: '640px', margin: '0 auto' }}>
-            We provide a comprehensive ecosystem for IT professionals to accelerate their careers, 
-            and for enterprises to scale their engineering capacity instantly.
+          <p className="section-desc animate-fade-up delay-3" style={{ margin: '1.25rem auto 0' }}>
+            From career advisory to placement guarantee — our end-to-end platform covers every step of your career journey.
           </p>
         </div>
-      </section>
+      </div>
 
-      <section className="bento-section">
-        <div className="container">
-          <div className="bento-grid">
-            {services.map((svc) => (
-              <div key={svc.id} className={`bento-card card bg-card bento-card--${svc.id}`} style={{ '--card-accent': `var(${svc.accent})`, backgroundImage: `url(${svc.bg})` }}>
-                <div className="card-overlay" />
-                <div className="bento-card__header">
-                  <div className="bento-icon" style={{ color: `var(${svc.accent})`, background: `var(${svc.accent}-glow)` }}>
-                    {svc.icon}
-                  </div>
-                  <div className="bento-title-group">
-                    <h3>{svc.title}</h3>
-                    <p className="mono">{svc.subtitle}</p>
-                  </div>
-                </div>
-
-                <ul className="bento-bullets">
-                  {svc.bullets.map((bullet, i) => (
-                    <li key={i}>
-                      <CheckCircle2 size={16} className="bullet-check" />
-                      <span>{bullet}</span>
-                    </li>
-                  ))}
-                </ul>
-
-                <Link to={`/contact?service=${encodeURIComponent(svc.title)}`} className="bento-cta btn-outline">
-                  {svc.cta} <ArrowRight size={14} />
-                </Link>
-                
-                {/* Decorative background glow */}
-                <div className="bento-card__glow" />
+      <div className="container section-padding">
+        <div className="services-grid">
+          {services.map((s, i) => (
+            <div key={i} className={`service-detail-card reveal reveal-delay-${Math.min(i % 3 + 1, 4)}`}>
+              <div className="service-detail-card__icon" style={{ background: s.bg, color: s.color }}>
+                {s.icon}
               </div>
-            ))}
+              <h4>{s.title}</h4>
+              <p>{s.desc}</p>
+              <ul className="service-detail-card__features">
+                {s.features.map((f, j) => (
+                  <li key={j}><CheckCircle size={14} color={s.color} />{f}</li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+
+        <div className="cta-box reveal" style={{ marginTop: '5rem' }}>
+          <div className="cta-box__glow" />
+          <h2 style={{ fontSize: 'clamp(1.75rem, 3.5vw, 2.5rem)' }}>Ready to Get Started?</h2>
+          <p>Tell us about your goals and we will match you with the perfect program.</p>
+          <div className="cta-box__actions">
+            <Link to="/pricing" className="btn" style={{ background: 'var(--bg-root)', color: 'var(--bg-invert)' }}>
+              View Pricing <ArrowRight size={16} />
+            </Link>
+            <Link to="/contact" className="btn btn-outline" style={{ borderColor: 'rgba(255,255,255,0.2)', color: 'var(--text-invert)' }}>
+              Talk to an Advisor
+            </Link>
           </div>
         </div>
-      </section>
-      
-      <section className="services-cta section-padding" style={{background: 'var(--bg-root)'}}>
-        <div className="container text-center">
-           <h2 className="section-title">Not sure where to <span className="text-coral">start?</span></h2>
-           <p className="section-subtitle" style={{margin:'0 auto 2rem'}}>
-             Book a free 15-minute consultation. We'll assess your goals and recommend the perfect path forward.
-           </p>
-           <Link to="/contact" className="btn btn-primary">Book Free Consultation</Link>
-        </div>
-      </section>
+      </div>
     </div>
   );
 };

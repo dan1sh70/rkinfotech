@@ -1,50 +1,68 @@
-import React from 'react';
+﻿import React from 'react';
 import { Link } from 'react-router-dom';
-import { MapPin } from 'lucide-react';
+import { MapPin, Phone, Mail, ArrowUpRight } from 'lucide-react';
 import './Footer.css';
 
 const Footer = () => {
+  const year = new Date().getFullYear();
+
   return (
     <footer className="footer">
-      <div className="container footer__grid">
+      <div className="container footer__inner">
         <div className="footer__brand">
-          <div style={{display:'flex', alignItems:'center', marginBottom:'1.25rem'}}>
-            <img src="/RKL-LOGO-2.png" alt="RK Infotech" style={{ height: '55px', objectFit: 'contain', marginLeft: '-10px' }} />
-          </div>
-          <p>Shaping careers, building futures, and connecting top-tier talent with leading enterprises across the United States since 2018.</p>
+          <img src="/RKL-LOGO-2.png" alt="RK Infotech" style={{ height: '40px', objectFit: 'contain' }} />
+          <p style={{ marginTop: '1rem', fontSize: '0.88rem', maxWidth: '260px', lineHeight: 1.65 }}>
+            Nationwide IT career coaching, staffing & placement. E-Verified and US-based.
+          </p>
           <div className="footer__contact">
-            <span className="mono" style={{color:'var(--text-primary)', fontSize:'0.85rem'}}>info@rkinfotechllc.com</span>
-            <span className="mono" style={{color:'var(--text-primary)', fontSize:'0.85rem'}}>(321) 788-9008</span>
+            <a href="tel:+16159637424" className="footer__contact-item">
+              <Phone size={14} /> +1 (615) 963-7424
+            </a>
+            <a href="mailto:contact@rkinfotech.com" className="footer__contact-item">
+              <Mail size={14} /> contact@rkinfotech.com
+            </a>
+            <div className="footer__contact-item">
+              <MapPin size={14} /> Nashville, TN · US Nationwide
+            </div>
           </div>
-          <div style={{marginTop: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem'}}>
-            <MapPin size={16} color="var(--text-dim)" />
-            <span style={{fontSize: '0.8rem', color: 'var(--text-dim)', fontWeight: 500}}>Headquartered in the USA</span>
-          </div>
         </div>
 
-        <div className="footer__col">
-          <h4>For Candidates</h4>
-          <Link to="/services">Career Advisory</Link>
-          <Link to="/services">Resume Optimization</Link>
-          <Link to="/pricing">Pricing Packages</Link>
-          <Link to="/refer-earn">Refer & Earn</Link>
+        <div className="footer__links-group">
+          <h6 className="footer__group-title">Services</h6>
+          <Link to="/services" className="footer__link">Career Advisory</Link>
+          <Link to="/services" className="footer__link">Resume Optimization</Link>
+          <Link to="/services" className="footer__link">Technical Training</Link>
+          <Link to="/services" className="footer__link">IT Staffing</Link>
+          <Link to="/services" className="footer__link">Job Support</Link>
         </div>
 
-        <div className="footer__col">
-          <h4>For Employers</h4>
-          <Link to="/services">IT Staffing</Link>
-          <Link to="/services">Software Development</Link>
-          <Link to="/contact">Request Talent</Link>
+        <div className="footer__links-group">
+          <h6 className="footer__group-title">Company</h6>
+          <Link to="/pricing"    className="footer__link">Pricing</Link>
+          <Link to="/faq"        className="footer__link">FAQ</Link>
+          <Link to="/refer-earn" className="footer__link">Refer & Earn</Link>
+          <Link to="/contact"    className="footer__link">Contact</Link>
         </div>
 
-        <div className="footer__col">
-          <h4>Company</h4>
-          <Link to="/faq">FAQ</Link>
-          <Link to="/contact">Contact Us</Link>
+        <div className="footer__cta-col">
+          <h6 className="footer__group-title">Get Started</h6>
+          <p style={{ fontSize: '0.85rem', marginBottom: '1.25rem' }}>
+            Take the first step toward your next big opportunity.
+          </p>
+          <Link to="/contact" className="btn btn-primary footer__cta-btn">
+            Talk to an Advisor <ArrowUpRight size={15} />
+          </Link>
         </div>
       </div>
-      <div className="container footer__bottom">
-        <p>© {new Date().getFullYear()} RK Infotech LLC. All Rights Reserved.</p>
+
+      <div className="footer__bottom">
+        <div className="container footer__bottom-inner">
+          <span>© {year} RK Infotech LLC. All rights reserved.</span>
+          <div className="footer__legal">
+            <span>Privacy Policy</span>
+            <span>Terms of Service</span>
+          </div>
+        </div>
       </div>
     </footer>
   );

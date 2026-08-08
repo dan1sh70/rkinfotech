@@ -1,97 +1,121 @@
-import React, { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
-import { Send } from 'lucide-react';
+﻿import React, { useState, useEffect } from 'react';
+import { Phone, Mail, MapPin, Send } from 'lucide-react';
 import './Contact.css';
 
-const Contact = () => {
-  const location = useLocation();
-  const [intent, setIntent] = useState('candidate');
-  const [formData, setFormData] = useState({ name: '', email: '', phone: '', interest: '', message: '' });
-
+const useReveal = () => {
   useEffect(() => {
-    const plan = new URLSearchParams(location.search).get('plan');
-    if (plan) { setIntent('candidate'); setFormData(prev => ({ ...prev, interest: `${plan} Plan` })); }
-  }, [location]);
+    const els = document.querySelectorAll('.reveal, .reveal-left, .reveal-right');
+    const obs = new IntersectionObserver(
+      (entries) => entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in-view'); }),
+      { threshold: 0.1 }
+    );
+    els.forEach(el => obs.observe(el));
+    return () => obs.disconnect();
+  }, []);
+};
 
-  const handleChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
+const Contact = () => {
+  useReveal();
+  const [form, setForm] = useState({ name: '', email: '', phone: '', service: '', message: '' });
+  const [sent, setSent] = useState(false);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    alert(`Thank you, ${formData.name}! We'll be in touch within 24 hours.`);
+    setSent(true);
   };
 
   return (
-    <div className="contact animate-fade-up">
-      <section className="contact__hero">
-        <div className="container text-center">
-          <span className="section-tag">Get in Touch</span>
-          <h1 className="section-title">Let's Start the <span className="gradient-text">Conversation.</span></h1>
-          <p className="section-subtitle">Whether you're advancing your career or scaling your team, we're here to help.</p>
+    <div className="contact-page">
+      <div className="contact-hero">
+        <div className="container">
+          <span className="section-eyebrow animate-fade-up delay-1">Contact Us</span>
+          <h1 className="section-title animate-fade-up delay-2" style={{ fontSize: 'clamp(2.5rem, 5vw, 4rem)', marginTop: '0.5rem' }}>
+            Let us Talk About Your Career
+          </h1>
+          <p className="section-desc animate-fade-up delay-3" style={{ margin: '1.25rem auto 0' }}>
+            Reach out and one of our advisors will get back to you within 24 hours.
+          </p>
         </div>
-      </section>
+      </div>
 
-      <section className="contact__body">
-        <div className="container contact__grid">
-          <div className="contact__sidebar">
-            <div className="info-block card">
-              <h4>Direct Inquiries</h4>
-              <p className="mono" style={{color:'var(--text-primary)', fontSize:'0.88rem'}}>info@rkinfotechllc.com</p>
-              <p className="mono" style={{color:'var(--text-primary)', fontSize:'0.88rem'}}>(321) 788-9008</p>
-            </div>
-            <div className="info-block card">
-              <h4>US Headquarters</h4>
-              <p>Winter Garden, FL<br/>United States</p>
-            </div>
-            <div className="info-block card">
-              <h4>India Operations</h4>
-              <p>Greater Noida, India</p>
+      <div className="container">
+        <div className="contact-layout">
+          <div className="reveal-left">
+            <h3 style={{ marginBottom: '2rem' }}>Get in Touch</h3>
+
+            {[
+              { icon: <Phone size={18} />, label: 'Phone', val: '+1 (615) 963-7424', href: 'tel:+16159637424' },
+              { icon: <Mail size={18} />, label: 'Email', val: 'contact@rkinfotech.com', href: 'mailto:contact@rkinfotech.com' },
+              { icon: <MapPin size={18} />, label: 'Location', val: 'Nashville, TN · US Nationwide', href: null },
+            ].map((item, i) => (
+              <div key={i} className="contact-info__item">
+                <div className="contact-info__icon">{item.icon}</div>
+                <div>
+                  <div style={{ fontSize: '0.72rem', color: 'var(--text-tertiary)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '0.25rem' }}>{item.label}</div>
+                  {item.href
+                    ? <a href={item.href} style={{ fontWeight: 500, color: 'var(--text-primary)' }}>{item.val}</a>
+                    : <span style={{ fontWeight: 500 }}>{item.val}</span>
+                  }
+                </div>
+              </div>
+            ))}
+
+            <div style={{ marginTop: '2rem', padding: '1.5rem', background: 'var(--accent-soft)', borderRadius: 'var(--r-lg)' }}>
+              <div style={{ fontSize: '0.78rem', color: 'var(--accent)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '0.5rem' }}>Response Time</div>
+              <div style={{ fontWeight: 600 }}>Within 24 hours</div>
+              <div style={{ fontSize: '0.85rem', color: 'var(--text-tertiary)', marginTop: '0.25rem' }}>Monday – Saturday, 9am – 7pm CST</div>
             </div>
           </div>
 
-          <div className="contact__form card">
-            <div className="intent-switch">
-              <button className={`intent-btn ${intent === 'candidate' ? 'intent-btn--on' : ''}`} onClick={() => setIntent('candidate')}>
-                I'm a Job Seeker
-              </button>
-              <button className={`intent-btn ${intent === 'employer' ? 'intent-btn--on' : ''}`} onClick={() => setIntent('employer')}>
-                I'm Hiring Talent
-              </button>
-            </div>
-
-            <form onSubmit={handleSubmit}>
-              <div className="form-group">
-                <label>Full Name</label>
-                <input type="text" name="name" value={formData.name} onChange={handleChange} placeholder="Jane Doe" required />
+          <div className="contact-form-card reveal reveal-delay-2">
+            {sent ? (
+              <div style={{ textAlign: 'center', padding: '3rem 0' }}>
+                <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>✓</div>
+                <h4>Message Sent!</h4>
+                <p style={{ marginTop: '0.5rem' }}>We will get back to you within 24 hours.</p>
               </div>
-              <div className="form-row">
-                <div className="form-group">
-                  <label>Email</label>
-                  <input type="email" name="email" value={formData.email} onChange={handleChange} placeholder="jane@company.com" required />
+            ) : (
+              <form onSubmit={handleSubmit}>
+                <h4 style={{ marginBottom: '1.75rem' }}>Send Us a Message</h4>
+                <div className="form-row">
+                  <div className="form-group">
+                    <label>Full Name *</label>
+                    <input type="text" placeholder="John Smith" required value={form.name} onChange={e => setForm({...form, name: e.target.value})} />
+                  </div>
+                  <div className="form-group">
+                    <label>Email *</label>
+                    <input type="email" placeholder="john@email.com" required value={form.email} onChange={e => setForm({...form, email: e.target.value})} />
+                  </div>
+                </div>
+                <div className="form-row">
+                  <div className="form-group">
+                    <label>Phone</label>
+                    <input type="tel" placeholder="+1 (555) 000-0000" value={form.phone} onChange={e => setForm({...form, phone: e.target.value})} />
+                  </div>
+                  <div className="form-group">
+                    <label>Service Interested In</label>
+                    <select value={form.service} onChange={e => setForm({...form, service: e.target.value})}>
+                      <option value="">Select a service</option>
+                      <option>Career Advisory</option>
+                      <option>Resume Optimization</option>
+                      <option>Technical Training</option>
+                      <option>IT Staffing</option>
+                      <option>Placement Package</option>
+                    </select>
+                  </div>
                 </div>
                 <div className="form-group">
-                  <label>Phone</label>
-                  <input type="tel" name="phone" value={formData.phone} onChange={handleChange} placeholder="(555) 123-4567" />
+                  <label>Message *</label>
+                  <textarea rows="5" placeholder="Tell us about your goals..." required value={form.message} onChange={e => setForm({...form, message: e.target.value})} style={{ resize: 'vertical' }} />
                 </div>
-              </div>
-              <div className="form-group">
-                <label>{intent === 'candidate' ? 'Plan / Service of Interest' : 'Staffing Requirements'}</label>
-                <input type="text" name="interest" value={formData.interest} onChange={handleChange} placeholder={intent === 'candidate' ? 'e.g., Professional Plan' : 'e.g., Senior React Developer'} />
-              </div>
-              {intent === 'candidate' && (
-                <div className="form-group">
-                  <label>Resume (Optional)</label>
-                  <input type="file" className="file-input" />
-                </div>
-              )}
-              <div className="form-group">
-                <label>Message</label>
-                <textarea name="message" value={formData.message} onChange={handleChange} rows="4" placeholder="Tell us about your goals..." />
-              </div>
-              <button type="submit" className="btn btn-primary full-width"><Send size={16} /> Send Inquiry</button>
-            </form>
+                <button type="submit" className="btn btn-primary" style={{ width: '100%' }}>
+                  Send Message <Send size={16} />
+                </button>
+              </form>
+            )}
           </div>
         </div>
-      </section>
+      </div>
     </div>
   );
 };

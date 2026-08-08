@@ -1,169 +1,80 @@
-.pricing__hero {
-  padding-top: calc(var(--nav-height) + 5rem);
-  padding-bottom: 3rem;
+﻿/* Pricing.css — v5 */
+.pricing-page { padding-top: var(--nav-height); }
+
+.pricing-hero {
+  padding: 5rem 0 4rem;
+  text-align: center;
+  border-bottom: 1px solid var(--border);
 }
 
-.pricing__body {
-  padding-bottom: var(--section-gap);
-}
-
-.pricing__grid {
+.pricing-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 1.25rem;
-  align-items: stretch;
+  margin-top: 3.5rem;
+  align-items: start;
 }
 
-.p-card {
-  padding: 2.5rem 2rem;
-  display: flex;
-  flex-direction: column;
+.pricing-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--r-2xl);
+  padding: 2rem;
+  transition: all var(--normal);
+}
+
+.pricing-card:hover {
+  border-color: var(--border-strong);
+  transform: translateY(-5px);
+  box-shadow: var(--shadow-md);
+}
+
+.pricing-card--featured {
+  background: var(--bg-invert);
+  border-color: transparent;
   position: relative;
 }
 
-.p-card--pop {
-  border-color: var(--coral);
-  box-shadow: 0 0 80px var(--coral-glow);
-}
+.pricing-card--featured h3,
+.pricing-card--featured h4,
+.pricing-card--featured p,
+.pricing-card--featured li { color: var(--text-invert) !important; }
 
-.pricing__popular-badge {
-  position: absolute;
-  top: -1px;
-  right: -1px;
-  background: var(--coral);
+.pricing-badge {
+  display: inline-block;
+  background: var(--accent);
   color: #fff;
-  padding: 0.4rem 1.25rem;
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 0.65rem;
-  font-weight: 600;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  border-bottom-left-radius: 12px;
-  border-top-right-radius: 11px;
-}
-
-.p-card__tag--gold {
-  background: var(--gold);
-  color: var(--bg-root);
-}
-
-.p-card__name {
-  font-size: 1.5rem;
-  margin-bottom: 0.4rem;
-}
-
-.p-card__desc {
-  font-size: 0.85rem;
-  color: var(--text-dim);
-  margin-bottom: 2rem;
-  min-height: 2.5rem;
-}
-
-.p-card__price-block {
-  margin-bottom: 1.5rem;
-}
-
-.p-card__price {
-  font-size: 3rem;
-  color: var(--text-primary);
-  line-height: 1;
-  display: block;
-}
-
-.p-card__price-label {
-  font-family: 'IBM Plex Mono', monospace;
   font-size: 0.68rem;
-  font-weight: 500;
-  color: var(--text-dim);
-  text-transform: uppercase;
+  font-weight: 700;
   letter-spacing: 0.1em;
-  display: block;
-  margin-top: 0.3rem;
-}
-
-/* Data row — fee% + days */
-.p-card__data-row {
-  display: flex;
-  align-items: center;
-  margin: 1.5rem 0;
-  padding: 1.25rem;
-  background: rgba(0,0,0,0.02);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-}
-
-.p-data {
-  flex: 1;
-}
-
-.p-data__value {
-  font-size: 1.6rem;
-  display: block;
-  line-height: 1;
-}
-
-.p-data__label {
-  font-family: 'IBM Plex Mono', monospace;
-  font-size: 0.62rem;
-  font-weight: 500;
-  color: var(--text-dim);
   text-transform: uppercase;
-  letter-spacing: 0.08em;
-  margin-top: 0.25rem;
-  display: block;
+  padding: 0.25rem 0.75rem;
+  border-radius: 100px;
+  margin-bottom: 1.25rem;
 }
 
-.p-data__sep {
-  width: 1px;
-  height: 36px;
-  background: var(--border);
+.pricing-price {
+  font-family: 'Syne', sans-serif;
+  font-size: 2.75rem;
+  font-weight: 800;
+  letter-spacing: -0.05em;
+  margin: 1rem 0;
 }
 
-/* Features */
-.p-card__features {
+.pricing-features {
   list-style: none;
-  margin-bottom: 2rem;
-  flex-grow: 1;
-}
-
-.p-card__features li {
   display: flex;
-  align-items: center;
+  flex-direction: column;
   gap: 0.65rem;
-  padding: 0.6rem 0;
-  border-bottom: 1px solid var(--border);
-  font-size: 0.88rem;
-  color: var(--text-primary);
+  margin: 1.5rem 0;
 }
 
-.p-card__features li:last-child { border-bottom: none; }
-.p-card__features li.disabled { color: var(--text-dim); }
-
-.f-icon {
-  width: 22px;
-  height: 22px;
+.pricing-features li {
   display: flex;
   align-items: center;
-  justify-content: center;
-  border-radius: 50%;
-  flex-shrink: 0;
+  gap: 0.6rem;
+  font-size: 0.88rem;
+  color: var(--text-secondary);
 }
 
-li:not(.disabled) .f-icon {
-  background: var(--coral-glow);
-  color: var(--coral);
-}
-
-li.disabled .f-icon {
-  background: rgba(255,255,255,0.02);
-  color: var(--text-dim);
-}
-
-@media (max-width: 1024px) {
-  .pricing__grid {
-    grid-template-columns: 1fr;
-    max-width: 480px;
-    margin: 0 auto;
-  }
-  .p-card--pop { order: -1; }
-}
+@media (max-width: 900px) { .pricing-grid { grid-template-columns: 1fr; max-width: 480px; margin-left: auto; margin-right: auto; } }

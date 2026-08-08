@@ -1,135 +1,81 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Check, X as XIcon, ArrowRight } from 'lucide-react';
+﻿import React, { useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import { CheckCircle, ArrowRight } from 'lucide-react';
 import './Pricing.css';
+
+const useReveal = () => {
+  useEffect(() => {
+    const els = document.querySelectorAll('.reveal, .reveal-left, .reveal-right');
+    const obs = new IntersectionObserver(
+      (entries) => entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in-view'); }),
+      { threshold: 0.1 }
+    );
+    els.forEach(el => obs.observe(el));
+    return () => obs.disconnect();
+  }, []);
+};
 
 const plans = [
   {
-    name: 'Basic',
-    price: '$1,500',
-    fee: '17%',
-    feeLabel: 'Post-Placement Fee',
-    days: '180',
-    daysLabel: 'Days Support',
-    tag: null,
-    bg: 'https://images.unsplash.com/photo-1554200876-56c2f25224fa?auto=format&fit=crop&w=600&q=80',
-    description: 'Essential toolkit for the self-driven job seeker.',
-    features: [
-      { text: 'Resume Optimization', ok: true },
-      { text: 'Interview Preparation', ok: true },
-      { text: 'Profile Marketing', ok: false },
-      { text: 'Dedicated Career Coach', ok: false },
-      { text: 'Placement Guarantee', ok: false },
-    ]
+    name: 'Starter', price: 'Custom', desc: 'For candidates new to the US market looking for foundational support.',
+    features: ['Resume optimization', 'LinkedIn refresh', 'Career roadmap session', 'Email support'],
+    cta: 'Get Started', featured: false,
   },
   {
-    name: 'Professional',
-    price: '$5,000',
-    fee: '12%',
-    feeLabel: 'Post-Placement Fee',
-    days: '150',
-    daysLabel: 'Days Support',
-    tag: 'Most Popular',
-    bg: 'https://images.unsplash.com/photo-1553877522-43269d4ea984?auto=format&fit=crop&w=600&q=80',
-    description: 'Full-service coaching with dedicated placement support.',
-    features: [
-      { text: 'Resume Optimization', ok: true },
-      { text: 'Interview Preparation', ok: true },
-      { text: 'Profile Marketing', ok: true },
-      { text: 'Dedicated Career Coach', ok: true },
-      { text: 'Placement Guarantee', ok: false },
-    ]
+    name: 'Growth', price: 'Custom', desc: 'Our most popular plan with end-to-end placement support and guaranteed results.',
+    features: ['Everything in Starter', 'Technical training program', 'Active profile marketing', '500+ partner outreach', 'Mock interview coaching', 'Placement guarantee'],
+    cta: 'Most Popular', featured: true,
   },
   {
-    name: 'Platinum',
-    price: '$20,000',
-    fee: '0%',
-    feeLabel: 'No Placement Fee',
-    days: '110',
-    daysLabel: 'Days Max to Place',
-    tag: 'Elite',
-    bg: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=600&q=80',
-    description: 'White-glove coaching with a full placement guarantee.',
-    features: [
-      { text: 'Resume Optimization', ok: true },
-      { text: 'Interview Preparation', ok: true },
-      { text: 'Profile Marketing', ok: true },
-      { text: 'Dedicated Senior Coach', ok: true },
-      { text: 'Placement Guarantee', ok: true },
-    ]
-  }
+    name: 'Enterprise', price: 'Custom', desc: 'For teams and companies seeking top-tier IT staffing and talent solutions.',
+    features: ['Dedicated account manager', 'Bulk candidate pipeline', 'Background verification', 'On-demand staffing', 'Contract & direct hire', 'Priority 24/7 support'],
+    cta: 'Contact Sales', featured: false,
+  },
 ];
 
 const Pricing = () => {
-  const navigate = useNavigate();
-
+  useReveal();
   return (
-    <div className="pricing animate-fade-up">
-      <section className="pricing__hero">
-        <div className="container text-center">
-          <span className="section-tag">Pricing Packages</span>
-          <h1 className="section-title">
-            Transparent Investment.<br />
-            <span className="gradient-text">Exceptional Returns.</span>
+    <div className="pricing-page">
+      <div className="pricing-hero">
+        <div className="container">
+          <span className="section-eyebrow animate-fade-up delay-1">Pricing</span>
+          <h1 className="section-title animate-fade-up delay-2" style={{ fontSize: 'clamp(2.5rem, 5vw, 4rem)', marginTop: '0.5rem' }}>
+            Transparent, Flexible Plans
           </h1>
-          <p className="section-subtitle">
-            Choose the placement package that matches your career ambitions. All plans include E-Verify and visa support.
+          <p className="section-desc animate-fade-up delay-3" style={{ margin: '1.25rem auto 0' }}>
+            No hidden fees. Every plan is tailored to your unique career goals and timeline.
           </p>
         </div>
-      </section>
+      </div>
 
-      <section className="pricing__body">
-        <div className="container">
-          <div className="pricing__grid">
-            {plans.map((plan, i) => (
-              <div key={i} className={`p-card card bg-card ${plan.tag === 'Most Popular' ? 'p-card--pop' : ''}`} style={{ backgroundImage: `url(${plan.bg})` }}>
-                <div className="card-overlay" />
-                {plan.tag && (
-                  <div className={`p-card__tag ${plan.tag === 'Elite' ? 'p-card__tag--gold' : ''}`}>
-                    {plan.tag}
-                  </div>
-                )}
-
-                <h3 className="p-card__name">{plan.name}</h3>
-                <p className="p-card__desc">{plan.description}</p>
-
-                <div className="p-card__price-block">
-                  <span className="p-card__price mono">{plan.price}</span>
-                  <span className="p-card__price-label">Enrollment Fee</span>
-                </div>
-
-                <div className="p-card__data-row">
-                  <div className="p-data">
-                    <span className="p-data__value mono text-coral">{plan.fee}</span>
-                    <span className="p-data__label">{plan.feeLabel}</span>
-                  </div>
-                  <div className="p-data__sep" />
-                  <div className="p-data">
-                    <span className="p-data__value mono text-cyan">{plan.days}</span>
-                    <span className="p-data__label">{plan.daysLabel}</span>
-                  </div>
-                </div>
-
-                <ul className="p-card__features">
-                  {plan.features.map((f, j) => (
-                    <li key={j} className={f.ok ? '' : 'disabled'}>
-                      <span className="f-icon">{f.ok ? <Check size={14} /> : <XIcon size={14} />}</span>
-                      {f.text}
-                    </li>
-                  ))}
-                </ul>
-
-                <button
-                  className={`btn full-width ${plan.tag === 'Most Popular' ? 'btn-primary' : 'btn-outline'}`}
-                  onClick={() => navigate(`/contact?plan=${encodeURIComponent(plan.name)}`)}
-                >
-                  Select {plan.name} <ArrowRight size={14} />
-                </button>
-              </div>
-            ))}
-          </div>
+      <div className="container section-padding">
+        <div className="pricing-grid">
+          {plans.map((plan, i) => (
+            <div key={i} className={`pricing-card reveal reveal-delay-${i + 1} ${plan.featured ? 'pricing-card--featured' : ''}`}>
+              {plan.featured && <span className="pricing-badge">Most Popular</span>}
+              <h3 style={{ fontSize: '1.5rem' }}>{plan.name}</h3>
+              <p style={{ fontSize: '0.88rem', marginTop: '0.5rem', marginBottom: '1.5rem', opacity: 0.7 }}>{plan.desc}</p>
+              <div className="pricing-price">{plan.price}</div>
+              <ul className="pricing-features">
+                {plan.features.map((f, j) => (
+                  <li key={j}>
+                    <CheckCircle size={15} color={plan.featured ? '#4ade80' : 'var(--green)'} />
+                    {f}
+                  </li>
+                ))}
+              </ul>
+              <Link to="/contact" className={`btn ${plan.featured ? 'btn-accent' : 'btn-primary'}`} style={{ width: '100%', marginTop: 'auto' }}>
+                {plan.cta} <ArrowRight size={16} />
+              </Link>
+            </div>
+          ))}
         </div>
-      </section>
+
+        <p style={{ textAlign: 'center', marginTop: '3rem', color: 'var(--text-tertiary)', fontSize: '0.9rem' }}>
+          All prices are customized based on your specific needs. <Link to="/contact" style={{ color: 'var(--accent)', fontWeight: 600 }}>Talk to us</Link> for a personalized quote.
+        </p>
+      </div>
     </div>
   );
 };
