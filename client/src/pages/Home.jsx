@@ -154,29 +154,42 @@ const ParticleCanvas = () => {
     const ro = new ResizeObserver(resize);
     ro.observe(canvas.parentElement);
 
+    const handleMouseMove = (e) => {
+      const r = canvas.getBoundingClientRect();
+      mouse.current = { x: e.clientX - r.left, y: e.clientY - r.top };
+    };
+    const handleMouseLeave = () => {
+      mouse.current = { x: -9999, y: -9999 };
+      isDown.current = false;
+    };
+    const handleMouseDown = (e) => {
+      isDown.current = true;
+      const r = canvas.getBoundingClientRect();
+      clickWave.current = { active: true, radius: 0, x: e.clientX - r.left, y: e.clientY - r.top };
+    };
+    const handleMouseUp = () => {
+      isDown.current = false;
+    };
+
+    window.addEventListener('mousemove', handleMouseMove);
+    window.addEventListener('mouseout', handleMouseLeave);
+    window.addEventListener('mousedown', handleMouseDown);
+    window.addEventListener('mouseup', handleMouseUp);
+
     return () => {
       cancelAnimationFrame(raf.current);
       ro.disconnect();
+      window.removeEventListener('mousemove', handleMouseMove);
+      window.removeEventListener('mouseout', handleMouseLeave);
+      window.removeEventListener('mousedown', handleMouseDown);
+      window.removeEventListener('mouseup', handleMouseUp);
     };
   }, []);
 
   return (
     <canvas
       ref={canvasRef}
-      style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', zIndex: 1, display: 'block', cursor: 'crosshair' }}
-      onMouseMove={e => {
-        const r = canvasRef.current?.getBoundingClientRect();
-        if (r) mouse.current = { x: e.clientX - r.left, y: e.clientY - r.top };
-      }}
-      onMouseLeave={() => { mouse.current = { x: -9999, y: -9999 }; isDown.current = false; }}
-      onMouseDown={(e) => { 
-        isDown.current = true;
-        const r = canvasRef.current?.getBoundingClientRect();
-        if (r) {
-          clickWave.current = { active: true, radius: 0, x: e.clientX - r.left, y: e.clientY - r.top };
-        }
-      }}
-      onMouseUp={() => { isDown.current = false; }}
+      style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', zIndex: 1, display: 'block', cursor: 'crosshair', pointerEvents: 'none' }}
     />
   );
 };
