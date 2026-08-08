@@ -1,4 +1,4 @@
-﻿import React, { useRef, useEffect, useState } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
   ArrowRight, ArrowUpRight, Briefcase, Code2, GraduationCap,
@@ -24,6 +24,8 @@ const useReveal = () => {
 const ParticleCanvas = () => {
   const canvasRef = useRef(null);
   const mouse = useRef({ x: -9999, y: -9999 });
+  const isDown = useRef(false);
+  const clickWave = useRef({ active: false, radius: 0, x: 0, y: 0 });
   const raf = useRef(null);
 
   useEffect(() => {
@@ -38,44 +40,94 @@ const ParticleCanvas = () => {
     };
     resize();
 
-    const COUNT = Math.min(Math.floor(W * H / 8000), 100);
-    const CONN = 130;
-    const MR = 160;
+    // Increase particle density slightly
+    const COUNT = Math.min(Math.floor(W * H / 6000), 150);
+    const CONN = 140;
+    const MR = 200; // Mouse Interaction Radius
 
     for (let i = 0; i < COUNT; i++) {
       particles.push({
         x: Math.random() * W, y: Math.random() * H,
-        vx: (Math.random() - .5) * .5, vy: (Math.random() - .5) * .5,
-        r: Math.random() * 1.5 + .5,
-        a: Math.random() * .5 + .2,
+        vx: (Math.random() - .5) * .8, vy: (Math.random() - .5) * .8,
+        r: Math.random() * 2 + 0.5,
+        a: Math.random() * .6 + .2,
         phase: Math.random() * Math.PI * 2,
+        baseVx: (Math.random() - .5) * .8,
+        baseVy: (Math.random() - .5) * .8,
       });
     }
 
     const tick = (t) => {
       ctx.clearRect(0, 0, W, H);
       const mx = mouse.current.x, my = mouse.current.y;
+      
+      // Update click wave
+      let wave = clickWave.current;
+      if (wave.active) {
+        wave.radius += 15;
+        if (wave.radius > Math.max(W, H)) wave.active = false;
+      }
 
       for (const p of particles) {
-        // mouse pull
         const dx = mx - p.x, dy = my - p.y;
         const d = Math.sqrt(dx * dx + dy * dy);
-        if (d < MR && d > 1) {
-          p.vx += dx / d * .015;
-          p.vy += dy / d * .015;
+        
+        // Interaction: Repel from mouse + draw towards mouse on click
+        if (d < MR) {
+          const force = (1 - d / MR) * 0.15;
+          if (isDown.current) {
+            // Pull towards mouse when clicking
+            p.vx += (dx / d) * force * 3;
+            p.vy += (dy / d) * force * 3;
+          } else {
+            // Repel otherwise
+            p.vx -= (dx / d) * force;
+            p.vy -= (dy / d) * force;
+          }
         }
-        p.vx *= .985; p.vy *= .985;
-        p.x += p.vx; p.y += p.vy;
-        if (p.x < 0) p.x = W; if (p.x > W) p.x = 0;
-        if (p.y < 0) p.y = H; if (p.y > H) p.y = 0;
+        
+        // Explode on click wave
+        if (wave.active) {
+          const wdx = wave.x - p.x;
+          const wdy = wave.y - p.y;
+          const wd = Math.sqrt(wdx * wdx + wdy * wdy);
+          if (Math.abs(wd - wave.radius) < 30) {
+            p.vx -= (wdx / wd) * 3;
+            p.vy -= (wdy / wd) * 3;
+          }
+        }
 
-        const pulse = Math.sin(t * .0015 + p.phase) * .3 + .7;
-        const glow = d < MR ? (1 - d / MR) * .6 : 0;
+        // Return to base velocity smoothly
+        p.vx += (p.baseVx - p.vx) * 0.05;
+        p.vy += (p.baseVy - p.vy) * 0.05;
+
+        // Apply friction
+        p.vx *= .98; p.vy *= .98;
+        
+        p.x += p.vx; p.y += p.vy;
+        
+        // Wrap edges smoothly
+        if (p.x < -10) p.x = W + 10; if (p.x > W + 10) p.x = -10;
+        if (p.y < -10) p.y = H + 10; if (p.y > H + 10) p.y = -10;
+
+        const pulse = Math.sin(t * .002 + p.phase) * .3 + .7;
+        const glow = d < MR ? (1 - d / MR) * .8 : 0;
+        const radius = p.r * pulse + (isDown.current && d < MR ? glow * 4 : glow * 1.5);
 
         ctx.beginPath();
-        ctx.arc(p.x, p.y, p.r * pulse + glow * 2, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(var(--particle-rgb), ${p.a * pulse + glow * .4})`;
+        ctx.arc(p.x, p.y, radius, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(var(--particle-rgb), ${p.a * pulse + glow * .5})`;
         ctx.fill();
+        
+        // Draw strong lines from mouse to nearby particles
+        if (d < MR) {
+          ctx.beginPath();
+          ctx.moveTo(mx, my);
+          ctx.lineTo(p.x, p.y);
+          ctx.strokeStyle = `rgba(var(--particle-rgb), ${(1 - d / MR) * 0.4})`;
+          ctx.lineWidth = isDown.current ? 1.5 : 0.8;
+          ctx.stroke();
+        }
       }
 
       for (let i = 0; i < particles.length; i++) {
@@ -84,16 +136,12 @@ const ParticleCanvas = () => {
           const dy = particles[i].y - particles[j].y;
           const d = Math.sqrt(dx * dx + dy * dy);
           if (d < CONN) {
-            const midX = (particles[i].x + particles[j].x) / 2;
-            const midY = (particles[i].y + particles[j].y) / 2;
-            const dm = Math.sqrt((mx - midX) ** 2 + (my - midY) ** 2);
-            const boost = dm < MR ? (1 - dm / MR) * .4 : 0;
-            const alpha = (1 - d / CONN) * .15 + boost;
+            const alpha = (1 - d / CONN) * .15;
             ctx.beginPath();
             ctx.moveTo(particles[i].x, particles[i].y);
             ctx.lineTo(particles[j].x, particles[j].y);
             ctx.strokeStyle = `rgba(var(--particle-rgb), ${alpha})`;
-            ctx.lineWidth = .5 + boost;
+            ctx.lineWidth = 0.5;
             ctx.stroke();
           }
         }
@@ -115,12 +163,20 @@ const ParticleCanvas = () => {
   return (
     <canvas
       ref={canvasRef}
-      style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', zIndex: 1, display: 'block' }}
+      style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', zIndex: 1, display: 'block', cursor: 'crosshair' }}
       onMouseMove={e => {
         const r = canvasRef.current?.getBoundingClientRect();
         if (r) mouse.current = { x: e.clientX - r.left, y: e.clientY - r.top };
       }}
-      onMouseLeave={() => { mouse.current = { x: -9999, y: -9999 }; }}
+      onMouseLeave={() => { mouse.current = { x: -9999, y: -9999 }; isDown.current = false; }}
+      onMouseDown={(e) => { 
+        isDown.current = true;
+        const r = canvasRef.current?.getBoundingClientRect();
+        if (r) {
+          clickWave.current = { active: true, radius: 0, x: e.clientX - r.left, y: e.clientY - r.top };
+        }
+      }}
+      onMouseUp={() => { isDown.current = false; }}
     />
   );
 };
