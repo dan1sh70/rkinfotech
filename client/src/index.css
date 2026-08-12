@@ -6,37 +6,40 @@
    ═══════════════════════════════════════════════════════ */
 
 :root {
-  /* 5U.AI EXACT LIGHT THEME */
-  --bg-root:     #f1f0ec; /* Soft beige background */
-  --bg-surface:  #ffffff; /* White cards */
-  --bg-card:     #ffffff;
-  --bg-card-2:   #f6f6f6;
+  /* FUTURISTIC LIGHT THEME */
+  --bg-root:     #f8fafc; /* Cool white / silver base */
+  --bg-surface:  #ffffff; /* Pure white cards */
+  --bg-card:     rgba(255, 255, 255, 0.7); /* Glassmorphism ready */
+  --bg-card-2:   #f1f5f9;
   --bg-elevated: #ffffff;
-  --bg-invert:   #1a1e27; /* Dark slate for footer/features */
+  --bg-invert:   #0f172a; /* Tech slate */
 
-  --text-primary:   #000000;
-  --text-secondary: #424242;
-  --text-tertiary:  #6b7280;
-  --text-invert:    #ffffff;
+  --text-primary:   #0f172a;
+  --text-secondary: #334155;
+  --text-tertiary:  #64748b;
+  --text-invert:    #f8fafc;
 
-  --border:        rgba(0,0,0,0.06);
-  --border-strong: rgba(0,0,0,0.12);
+  --border:        rgba(15, 23, 42, 0.08);
+  --border-strong: rgba(15, 23, 42, 0.15);
 
-  --accent:      #db5a3c; /* 5u.ai Orange */
-  --accent-soft: rgba(219, 90, 60, 0.1);
-  --accent-glow: rgba(219, 90, 60, 0.25);
+  --accent:      #0ea5e9; /* Cyber Cyan / Sky */
+  --accent-soft: rgba(14, 165, 233, 0.1);
+  --accent-glow: rgba(14, 165, 233, 0.25);
+  
+  --accent-alt:  #6366f1; /* Electric Indigo */
 
   --green:       #10b981;  --green-soft:  rgba(16,185,129,0.1);
   --amber:       #f59e0b;  --amber-soft:  rgba(245,158,11,0.1);
   --rose:        #ef4444;  --rose-soft:   rgba(239,68,68,0.1);
   --violet:      #8b5cf6;  --violet-soft: rgba(139,92,246,0.1);
 
-  --shadow-xs: 0 1px 3px rgba(0,0,0,0.05);
-  --shadow-sm: 0 4px 12px rgba(0,0,0,0.05);
-  --shadow-md: 0 12px 32px rgba(0,0,0,0.08);
-  --shadow-lg: 0 30px 60px rgba(0,0,0,0.1);
+  --shadow-xs: 0 1px 3px rgba(15, 23, 42, 0.05);
+  --shadow-sm: 0 4px 12px rgba(15, 23, 42, 0.05);
+  --shadow-md: 0 12px 32px rgba(15, 23, 42, 0.08);
+  --shadow-lg: 0 30px 60px rgba(15, 23, 42, 0.12);
   
-  --noise-opacity: 0.015;
+  --noise-opacity: 0.02;
+  --particle-rgb: 14, 165, 233; /* Cyan particles */
 }
 
 :root {
