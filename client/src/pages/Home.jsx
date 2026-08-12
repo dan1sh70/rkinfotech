@@ -203,13 +203,13 @@ const Home = () => {
 
       {/* ═══ HERO ═══ */}
       <section className="hero">
-        {/* Particle background */}
-        <div className="hero__canvas-wrap">
+        {/* Aurora & Particle Background */}
+        <div className="hero__aurora-wrap">
+          <div className="hero__blob hero__blob--1" />
+          <div className="hero__blob hero__blob--2" />
+          <div className="hero__blob hero__blob--3" />
           <ParticleCanvas />
         </div>
-        {/* Ambient blobs */}
-        <div className="hero__blob hero__blob--1" />
-        <div className="hero__blob hero__blob--2" />
 
         <div className="container hero__inner">
           {/* Left content */}
@@ -289,22 +289,17 @@ const Home = () => {
         </div>
       </section>
 
-      {/* ═══ MARQUEE ═══ */}
+      {/* ═══ TRUSTED BY MARQUEE ═══ */}
       <div className="marquee-strip">
         <div className="marquee-wrap">
           <div className="marquee-track">
             {[...Array(3)].map((_, i) => (
               <React.Fragment key={i}>
-                <span className="marquee-item">Career Growth</span>
-                <span className="marquee-sep">✦</span>
-                <span className="marquee-item hollow">ATS Resumes</span>
-                <span className="marquee-sep">✦</span>
-                <span className="marquee-item">IT Staffing</span>
-                <span className="marquee-sep">✦</span>
-                <span className="marquee-item hollow">Tech Training</span>
-                <span className="marquee-sep">✦</span>
-                <span className="marquee-item">US Placements</span>
-                <span className="marquee-sep">✦</span>
+                <div className="marquee-logo"><span className="mono">MarcoPolo</span><span style={{color: 'var(--accent)', fontWeight: 'bold'}}>Line</span></div>
+                <div className="marquee-logo"><span className="mono">GLOBAL</span><span>Logistics</span></div>
+                <div className="marquee-logo"><span className="mono">SCHMELZER</span><span style={{color: '#f59e0b', fontSize: '0.8em'}}>SPEDITION</span></div>
+                <div className="marquee-logo"><Activity size={24} /> <span className="mono">TCI</span></div>
+                <div className="marquee-logo"><MapPin size={24} /> <span className="mono">WAHL & CO</span></div>
               </React.Fragment>
             ))}
           </div>
