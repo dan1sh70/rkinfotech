@@ -15,65 +15,58 @@
   background: var(--bg-root);
 }
 
-.hero__canvas-wrap {
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  pointer-events: none;
-}
-
-.hero__canvas-wrap canvas { pointer-events: auto; }
-
-/* ─── AURORA BACKGROUND ─── */
-.hero__aurora-wrap {
+/* ─── 5U.AI ARCH BACKGROUND ─── */
+.hero__bg-wrap {
   position: absolute;
   inset: 0;
   overflow: hidden;
   z-index: 0;
   pointer-events: none;
-  background: #000; /* Deep space black */
 }
 
-.hero__blob {
+.hero__arch {
+  position: absolute;
+  top: -10vh;
+  right: -20vw;
+  width: 140vw;
+  height: 140vw;
+  border-radius: 50%;
+  border: 14vw solid #e8e6df; /* Soft light gray arch */
+  opacity: 0.8;
+  transform: scaleY(0.7) rotate(-15deg);
+}
+
+.hero__orb {
   position: absolute;
   border-radius: 50%;
-  filter: blur(120px);
-  pointer-events: none;
-  opacity: 0.6;
-  mix-blend-mode: screen;
+  background: #2a354f; /* Deep dark blue orb */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: inset -10px -10px 30px rgba(0,0,0,0.5), 0 20px 40px rgba(0,0,0,0.15);
+  color: white;
 }
 
-.hero__blob--1 {
-  width: 800px;
-  height: 800px;
-  background: radial-gradient(circle, rgba(16,185,129,0.3) 0%, transparent 70%); /* Emerald/Neon Green */
-  top: -200px;
-  right: -100px;
-  animation: aurora-float 20s ease-in-out infinite alternate;
-}
-
-.hero__blob--2 {
-  width: 900px;
-  height: 900px;
-  background: radial-gradient(circle, rgba(59,130,246,0.25) 0%, transparent 70%); /* Cyber Blue */
-  bottom: -300px;
-  left: -200px;
-  animation: aurora-float 25s ease-in-out infinite alternate-reverse;
-}
-
-.hero__blob--3 {
-  width: 600px;
-  height: 600px;
-  background: radial-gradient(circle, rgba(139,92,246,0.2) 0%, transparent 70%); /* Deep Violet */
+.hero__orb--1 {
+  width: 120px;
+  height: 120px;
   top: 30%;
-  left: 40%;
-  animation: aurora-float 18s ease-in-out infinite alternate;
+  right: 15%;
+  animation: orb-float 8s ease-in-out infinite alternate;
 }
 
-@keyframes aurora-float {
-  0% { transform: translate(0, 0) scale(1) rotate(0deg); }
-  50% { transform: translate(100px, 50px) scale(1.2) rotate(180deg); }
-  100% { transform: translate(-50px, 150px) scale(0.9) rotate(360deg); }
+.hero__orb--2 {
+  width: 150px;
+  height: 150px;
+  bottom: 10%;
+  right: 35%;
+  background: #3b4566; /* Slightly lighter blue orb */
+  animation: orb-float 10s ease-in-out infinite alternate-reverse;
+}
+
+@keyframes orb-float {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(-30px); }
 }
 
 .hero__inner {
@@ -164,19 +157,17 @@
 
 .hero-stat-card {
   position: absolute;
-  background: rgba(17, 17, 17, 0.65);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.08);
   border-radius: var(--r-xl);
   padding: 1.5rem;
   transition: transform 0.4s var(--spring), box-shadow 0.4s ease;
-  box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.06);
 }
 
 .hero-stat-card:hover {
-  border-color: rgba(255, 255, 255, 0.3);
-  box-shadow: 0 30px 60px rgba(0,0,0,0.6), 0 0 20px rgba(255,255,255,0.05);
+  border-color: rgba(0, 0, 0, 0.15);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.1);
 }
 
 /* Card 1: Main (Top Back) */
@@ -216,11 +207,11 @@
 .hero-stat-card:nth-child(4):hover { transform: rotateX(0deg) rotateY(0deg) translateZ(180px) scale(1.05); }
 
 .hero-stat-card--dark {
-  background: rgba(255, 255, 255, 0.95);
-  box-shadow: 0 20px 40px rgba(255,255,255,0.1);
+  background: var(--bg-invert);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.15);
 }
 
-.hero-stat-card--dark > * { color: #000 !important; }
+.hero-stat-card--dark > * { color: var(--text-invert) !important; }
 
 .hero-stat-card__top {
   display: flex;
@@ -243,7 +234,7 @@
 
 .hero-stat-card__bar-track {
   height: 4px;
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(0, 0, 0, 0.08);
   border-radius: 4px;
   margin-top: 0.875rem;
   overflow: hidden;
@@ -252,7 +243,7 @@
 .hero-stat-card__bar {
   height: 100%;
   width: 0;
-  background: #fff;
+  background: var(--accent);
   border-radius: 4px;
   animation: fill-bar 1.5s var(--ease-out) 0.6s forwards;
 }
@@ -297,10 +288,10 @@
 
 /* ═══ MARQUEE STRIP ══════════════════════════ */
 .marquee-strip {
-  padding: 1.75rem 0;
-  border-top: 1px solid var(--border);
-  border-bottom: 1px solid var(--border);
-  background: var(--bg-surface);
+  padding: 2.5rem 0;
+  background: #1a1e27; /* Dark slate matching 5u.ai */
+  border-top: none;
+  border-bottom: none;
 }
 
 /* ═══ SERVICES BENTO ═══════════════════════ */

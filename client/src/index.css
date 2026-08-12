@@ -6,37 +6,37 @@
    ═══════════════════════════════════════════════════════ */
 
 :root {
-  /* ULTRA PREMIUM DARK THEME (Default) */
-  --bg-root:     #000000;
-  --bg-surface:  #0a0a0a;
-  --bg-card:     #111111;
-  --bg-card-2:   #181818;
-  --bg-elevated: #1f1f1f;
-  --bg-invert:   #ffffff;
+  /* 5U.AI EXACT LIGHT THEME */
+  --bg-root:     #f1f0ec; /* Soft beige background */
+  --bg-surface:  #ffffff; /* White cards */
+  --bg-card:     #ffffff;
+  --bg-card-2:   #f6f6f6;
+  --bg-elevated: #ffffff;
+  --bg-invert:   #1a1e27; /* Dark slate for footer/features */
 
-  --text-primary:   #ffffff;
-  --text-secondary: #a1a1aa;
-  --text-tertiary:  #71717a;
-  --text-invert:    #000000;
+  --text-primary:   #000000;
+  --text-secondary: #424242;
+  --text-tertiary:  #6b7280;
+  --text-invert:    #ffffff;
 
-  --border:        rgba(255,255,255,0.08);
-  --border-strong: rgba(255,255,255,0.15);
+  --border:        rgba(0,0,0,0.06);
+  --border-strong: rgba(0,0,0,0.12);
 
-  --accent:      #ffffff; /* White accents look super premium on black */
-  --accent-soft: rgba(255, 255, 255, 0.1);
-  --accent-glow: rgba(255, 255, 255, 0.25);
+  --accent:      #db5a3c; /* 5u.ai Orange */
+  --accent-soft: rgba(219, 90, 60, 0.1);
+  --accent-glow: rgba(219, 90, 60, 0.25);
 
   --green:       #10b981;  --green-soft:  rgba(16,185,129,0.1);
   --amber:       #f59e0b;  --amber-soft:  rgba(245,158,11,0.1);
   --rose:        #ef4444;  --rose-soft:   rgba(239,68,68,0.1);
   --violet:      #8b5cf6;  --violet-soft: rgba(139,92,246,0.1);
 
-  --shadow-xs: 0 1px 3px rgba(0,0,0,0.5);
-  --shadow-sm: 0 4px 12px rgba(0,0,0,0.8);
-  --shadow-md: 0 12px 32px rgba(0,0,0,0.9);
-  --shadow-lg: 0 30px 60px rgba(0,0,0,1);
+  --shadow-xs: 0 1px 3px rgba(0,0,0,0.05);
+  --shadow-sm: 0 4px 12px rgba(0,0,0,0.05);
+  --shadow-md: 0 12px 32px rgba(0,0,0,0.08);
+  --shadow-lg: 0 30px 60px rgba(0,0,0,0.1);
   
-  --noise-opacity: 0.04;
+  --noise-opacity: 0.015;
 }
 
 :root {

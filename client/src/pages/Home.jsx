@@ -20,179 +20,7 @@ const useReveal = () => {
   }, []);
 };
 
-/* ─── Interactive Particle Canvas ─── */
-const ParticleCanvas = () => {
-  const canvasRef = useRef(null);
-  const mouse = useRef({ x: -9999, y: -9999 });
-  const isDown = useRef(false);
-  const clickWave = useRef({ active: false, radius: 0, x: 0, y: 0 });
-  const raf = useRef(null);
 
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext('2d');
-    let W, H, particles = [];
-
-    const resize = () => {
-      W = canvas.width = canvas.offsetWidth;
-      H = canvas.height = canvas.offsetHeight;
-    };
-    resize();
-
-    // Increase particle density slightly
-    const COUNT = Math.min(Math.floor(W * H / 6000), 150);
-    const CONN = 140;
-    const MR = 200; // Mouse Interaction Radius
-
-    for (let i = 0; i < COUNT; i++) {
-      particles.push({
-        x: Math.random() * W, y: Math.random() * H,
-        vx: (Math.random() - .5) * .8, vy: (Math.random() - .5) * .8,
-        r: Math.random() * 2 + 0.5,
-        a: Math.random() * .6 + .2,
-        phase: Math.random() * Math.PI * 2,
-        baseVx: (Math.random() - .5) * .8,
-        baseVy: (Math.random() - .5) * .8,
-      });
-    }
-
-    const tick = (t) => {
-      ctx.clearRect(0, 0, W, H);
-      const mx = mouse.current.x, my = mouse.current.y;
-      
-      // Update click wave
-      let wave = clickWave.current;
-      if (wave.active) {
-        wave.radius += 15;
-        if (wave.radius > Math.max(W, H)) wave.active = false;
-      }
-
-      for (const p of particles) {
-        const dx = mx - p.x, dy = my - p.y;
-        const d = Math.sqrt(dx * dx + dy * dy);
-        
-        // Interaction: Repel from mouse + draw towards mouse on click
-        if (d < MR) {
-          const force = (1 - d / MR) * 0.15;
-          if (isDown.current) {
-            // Pull towards mouse when clicking
-            p.vx += (dx / d) * force * 3;
-            p.vy += (dy / d) * force * 3;
-          } else {
-            // Repel otherwise
-            p.vx -= (dx / d) * force;
-            p.vy -= (dy / d) * force;
-          }
-        }
-        
-        // Explode on click wave
-        if (wave.active) {
-          const wdx = wave.x - p.x;
-          const wdy = wave.y - p.y;
-          const wd = Math.sqrt(wdx * wdx + wdy * wdy);
-          if (Math.abs(wd - wave.radius) < 30) {
-            p.vx -= (wdx / wd) * 3;
-            p.vy -= (wdy / wd) * 3;
-          }
-        }
-
-        // Return to base velocity smoothly
-        p.vx += (p.baseVx - p.vx) * 0.05;
-        p.vy += (p.baseVy - p.vy) * 0.05;
-
-        // Apply friction
-        p.vx *= .98; p.vy *= .98;
-        
-        p.x += p.vx; p.y += p.vy;
-        
-        // Wrap edges smoothly
-        if (p.x < -10) p.x = W + 10; if (p.x > W + 10) p.x = -10;
-        if (p.y < -10) p.y = H + 10; if (p.y > H + 10) p.y = -10;
-
-        const pulse = Math.sin(t * .002 + p.phase) * .3 + .7;
-        const glow = d < MR ? (1 - d / MR) * .8 : 0;
-        const radius = p.r * pulse + (isDown.current && d < MR ? glow * 4 : glow * 1.5);
-
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, radius, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(var(--particle-rgb), ${p.a * pulse + glow * .5})`;
-        ctx.fill();
-        
-        // Draw strong lines from mouse to nearby particles
-        if (d < MR) {
-          ctx.beginPath();
-          ctx.moveTo(mx, my);
-          ctx.lineTo(p.x, p.y);
-          ctx.strokeStyle = `rgba(var(--particle-rgb), ${(1 - d / MR) * 0.4})`;
-          ctx.lineWidth = isDown.current ? 1.5 : 0.8;
-          ctx.stroke();
-        }
-      }
-
-      for (let i = 0; i < particles.length; i++) {
-        for (let j = i + 1; j < particles.length; j++) {
-          const dx = particles[i].x - particles[j].x;
-          const dy = particles[i].y - particles[j].y;
-          const d = Math.sqrt(dx * dx + dy * dy);
-          if (d < CONN) {
-            const alpha = (1 - d / CONN) * .15;
-            ctx.beginPath();
-            ctx.moveTo(particles[i].x, particles[i].y);
-            ctx.lineTo(particles[j].x, particles[j].y);
-            ctx.strokeStyle = `rgba(var(--particle-rgb), ${alpha})`;
-            ctx.lineWidth = 0.5;
-            ctx.stroke();
-          }
-        }
-      }
-
-      raf.current = requestAnimationFrame(tick);
-    };
-
-    raf.current = requestAnimationFrame(tick);
-    const ro = new ResizeObserver(resize);
-    ro.observe(canvas.parentElement);
-
-    const handleMouseMove = (e) => {
-      const r = canvas.getBoundingClientRect();
-      mouse.current = { x: e.clientX - r.left, y: e.clientY - r.top };
-    };
-    const handleMouseLeave = () => {
-      mouse.current = { x: -9999, y: -9999 };
-      isDown.current = false;
-    };
-    const handleMouseDown = (e) => {
-      isDown.current = true;
-      const r = canvas.getBoundingClientRect();
-      clickWave.current = { active: true, radius: 0, x: e.clientX - r.left, y: e.clientY - r.top };
-    };
-    const handleMouseUp = () => {
-      isDown.current = false;
-    };
-
-    window.addEventListener('mousemove', handleMouseMove);
-    window.addEventListener('mouseout', handleMouseLeave);
-    window.addEventListener('mousedown', handleMouseDown);
-    window.addEventListener('mouseup', handleMouseUp);
-
-    return () => {
-      cancelAnimationFrame(raf.current);
-      ro.disconnect();
-      window.removeEventListener('mousemove', handleMouseMove);
-      window.removeEventListener('mouseout', handleMouseLeave);
-      window.removeEventListener('mousedown', handleMouseDown);
-      window.removeEventListener('mouseup', handleMouseUp);
-    };
-  }, []);
-
-  return (
-    <canvas
-      ref={canvasRef}
-      style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', zIndex: 1, display: 'block', cursor: 'crosshair', pointerEvents: 'none' }}
-    />
-  );
-};
 
 /* ─── Home Page ─── */
 const Home = () => {
@@ -203,38 +31,40 @@ const Home = () => {
 
       {/* ═══ HERO ═══ */}
       <section className="hero">
-        {/* Aurora & Particle Background */}
-        <div className="hero__aurora-wrap">
-          <div className="hero__blob hero__blob--1" />
-          <div className="hero__blob hero__blob--2" />
-          <div className="hero__blob hero__blob--3" />
-          <ParticleCanvas />
+        {/* Arch & Orb Background */}
+        <div className="hero__bg-wrap">
+          <div className="hero__arch" />
+          <div className="hero__orb hero__orb--1">
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
+            </svg>
+          </div>
+          <div className="hero__orb hero__orb--2">
+            <div style={{ width: '60px', height: '60px', background: 'rgba(255,255,255,0.1)', borderRadius: '12px', transform: 'rotate(15deg)' }} />
+          </div>
         </div>
 
         <div className="container hero__inner">
           {/* Left content */}
           <div className="hero__content">
-            <div className="hero__eyebrow animate-fade-up delay-1">
-              <span className="hero__dot" />
-              <span className="mono">US-Based · E-Verified · Nationwide</span>
+            <div className="hero__eyebrow animate-fade-up delay-1" style={{ background: 'rgba(0,0,0,0.05)', color: '#000', border: '1px solid rgba(0,0,0,0.1)' }}>
+              <span className="mono" style={{ fontSize: '0.75rem', fontWeight: 600, letterSpacing: '0.05em' }}>FROM INBOX TO OFFER</span>
             </div>
 
-            <h1 className="hero__title animate-fade-up delay-2">
-              Accelerate Your<br />
-              <span className="hero__title-gradient">Tech Career.</span>
+            <h1 className="hero__title animate-fade-up delay-2" style={{ fontSize: 'clamp(3.5rem, 7vw, 5.5rem)', lineHeight: 1, letterSpacing: '-0.04em' }}>
+              Tech Careers.<br />
+              Built for<br />
+              <span style={{ color: 'var(--accent)' }}>Professionals.</span>
             </h1>
 
-            <p className="hero__desc animate-fade-up delay-3">
+            <p className="hero__desc animate-fade-up delay-3" style={{ maxWidth: '400px', fontSize: '1.1rem', marginTop: '1.5rem', color: 'var(--text-secondary)' }}>
               RK Infotech engineers career breakthroughs. ATS-optimized resumes,
-              expert training, and guaranteed placements with 500+ hiring partners.
+              expert training, and guaranteed placements.
             </p>
 
-            <div className="hero__actions animate-fade-up delay-4">
-              <Link to="/pricing" className="btn btn-primary hero__btn-main">
-                View Plans <ArrowRight size={16} />
-              </Link>
-              <Link to="/services" className="btn btn-outline">
-                Our Services
+            <div className="hero__actions animate-fade-up delay-4" style={{ marginTop: '2.5rem' }}>
+              <Link to="/pricing" className="btn btn-primary hero__btn-main" style={{ background: 'var(--accent)', color: '#fff', padding: '1rem 2rem', borderRadius: '100px', fontWeight: 600 }}>
+                CONTACT US <ArrowRight size={16} />
               </Link>
             </div>
           </div>
