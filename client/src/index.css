@@ -1,4 +1,5 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
+@import url('https://api.fontshare.com/v2/css?f[]=satoshi@900,700,500,400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&display=swap');
 
 /* ═══════════════════════════════════════════════════════
    RK INFOTECH — DESIGN SYSTEM v5.1
@@ -6,40 +7,40 @@
    ═══════════════════════════════════════════════════════ */
 
 :root {
-  /* FUTURISTIC LIGHT THEME */
-  --bg-root:     #f8fafc; /* Cool white / silver base */
-  --bg-surface:  #ffffff; /* Pure white cards */
-  --bg-card:     rgba(255, 255, 255, 0.7); /* Glassmorphism ready */
-  --bg-card-2:   #f1f5f9;
+  /* 5U.AI EXACT THEME TOKENS */
+  --bg-root:     #f7f6f5; /* main background (cf4751bc-a7ee-4304-a92b-9455e7e10e93) */
+  --bg-surface:  #ffffff; 
+  --bg-card:     #ffffff; 
+  --bg-card-2:   #f8f9fa; /* (cb2fcdfc-9ba7-4dee-ab6d-850ef7ec4640) */
   --bg-elevated: #ffffff;
-  --bg-invert:   #0f172a; /* Tech slate */
+  --bg-invert:   #282322; /* (23711623-7931-4984-bad3-1b010fe8e3c1) */
 
-  --text-primary:   #0f172a;
-  --text-secondary: #334155;
-  --text-tertiary:  #64748b;
-  --text-invert:    #f8fafc;
+  --text-primary:   #000000;
+  --text-secondary: #4e5b6d; /* (47ec8a85-ccbb-491c-9707-e3153ccedb8d) */
+  --text-tertiary:  #d1d5dd; /* (ae31827c-f514-4428-8149-ff908cd93bb8) */
+  --text-invert:    #ffffff;
 
-  --border:        rgba(15, 23, 42, 0.08);
-  --border-strong: rgba(15, 23, 42, 0.15);
+  --border:        #e9ebef; /* (9938f050-9528-4f91-97cb-e09cf4af36e7) */
+  --border-strong: rgba(0,0,0,0.1);
 
-  --accent:      #0ea5e9; /* Cyber Cyan / Sky */
-  --accent-soft: rgba(14, 165, 233, 0.1);
-  --accent-glow: rgba(14, 165, 233, 0.25);
+  --accent:      #de5531; /* 5u.ai Exact Orange (29860054-14d4-4307-ae08-ac0022baf665) */
+  --accent-soft: #f4e8e5; /* (ee7553a3-9b18-4f99-be47-17f7f321faf5) */
+  --accent-glow: rgba(222, 85, 49, 0.25);
   
-  --accent-alt:  #6366f1; /* Electric Indigo */
+  --accent-alt:  #0066ff; /* (4ff93ce6-cc1a-454b-9468-3e6acbbe6daa) */
 
   --green:       #10b981;  --green-soft:  rgba(16,185,129,0.1);
   --amber:       #f59e0b;  --amber-soft:  rgba(245,158,11,0.1);
   --rose:        #ef4444;  --rose-soft:   rgba(239,68,68,0.1);
   --violet:      #8b5cf6;  --violet-soft: rgba(139,92,246,0.1);
 
-  --shadow-xs: 0 1px 3px rgba(15, 23, 42, 0.05);
-  --shadow-sm: 0 4px 12px rgba(15, 23, 42, 0.05);
-  --shadow-md: 0 12px 32px rgba(15, 23, 42, 0.08);
-  --shadow-lg: 0 30px 60px rgba(15, 23, 42, 0.12);
+  --shadow-xs: 0 1px 3px rgba(0,0,0,0.05);
+  --shadow-sm: 0 4px 12px rgba(0,0,0,0.05);
+  --shadow-md: 0 12px 32px rgba(0,0,0,0.08);
+  --shadow-lg: 0 30px 60px rgba(0,0,0,0.1);
   
-  --noise-opacity: 0.02;
-  --particle-rgb: 14, 165, 233; /* Cyan particles */
+  --noise-opacity: 0.015;
+  --particle-rgb: 222, 85, 49;
 }
 
 :root {
@@ -85,19 +86,10 @@ body::after {
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
-h1,h2,h3 {
-  font-family: 'Outfit', sans-serif;
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Satoshi', sans-serif;
   font-weight: 700;
   line-height: 1.1;
-  letter-spacing: -0.02em;
-  color: var(--text-primary);
-}
-
-h4,h5,h6 {
-  font-family: 'Outfit', sans-serif;
-  font-weight: 600;
-  line-height: 1.3;
-  letter-spacing: -0.01em;
   color: var(--text-primary);
 }
 
@@ -210,16 +202,13 @@ a { color: inherit; text-decoration: none; }
 .marquee-track { display: inline-flex; animation: marquee-run 35s linear infinite; width: max-content; }
 .marquee-track:hover { animation-play-state: paused; }
 .marquee-logo {
+  font-size: 1.5rem;
+  font-weight: 500;
+  color: var(--text-invert); /* Ensure visibility on dark background */
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  padding: 0 2.5rem;
-  font-family: 'Outfit', sans-serif;
-  font-size: 1.5rem;
-  font-weight: 600;
-  color: var(--text-secondary);
-  opacity: 0.5;
-  transition: opacity var(--fast);
+  padding: 0 4rem;
 }
 
 .marquee-logo:hover {
